@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC Helvetia - Club de Football Suisse</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">⚽</div>
+        <span>FC <strong>Helvetia</strong></span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#actualites">Actualités</a></li>
+        <li><a href="#equipe">Équipe</a></li>
+        <li><a href="#calendrier">Calendrier</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="accueil">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Fondé en 1923</div>
+      <h1>FC <span class="highlight">Helvetia</span></h1>
+      <p class="hero-subtitle">Passion. Fierté. Victoire.</p>
+      <p class="hero-desc">Le club de football au cœur des Alpes suisses. Rejoignez une communauté unie par l'amour du ballon rond.</p>
+      <div class="hero-buttons">
+        <a href="#equipe" class="btn btn-primary">Notre Équipe</a>
+        <a href="#calendrier" class="btn btn-outline">Prochain Match</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">102</span>
+        <span class="stat-label">Ans d'histoire</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">450+</span>
+        <span class="stat-label">Membres</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">12</span>
+        <span class="stat-label">Titres régionaux</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT MATCH BANNER -->
+  <div class="match-banner">
+    <div class="match-banner-inner">
+      <span class="match-label">Prochain match</span>
+      <div class="match-teams">
+        <span class="team home">FC Helvetia</span>
+        <span class="vs">VS</span>
+        <span class="team away">FC Lausanne B</span>
+      </div>
+      <div class="match-info-group">
+        <span class="match-date">Samedi 12 Avril 2026</span>
+        <span class="match-sep">•</span>
+        <span class="match-time">15:00</span>
+        <span class="match-sep">•</span>
+        <span class="match-venue">Stade du Lac, Genève</span>
+      </div>
+      <a href="#calendrier" class="btn btn-sm">Voir tous les matchs</a>
+    </div>
+  </div>
+
+  <!-- ACTUALITES -->
+  <section class="section" id="actualites">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Le club</span>
+        <h2>Dernières Actualités</h2>
+        <p>Restez informés des dernières nouvelles du FC Helvetia</p>
+      </div>
+      <div class="news-grid">
+        <article class="news-card featured">
+          <div class="news-image" style="background: linear-gradient(135deg, #c0392b 0%, #8e1a10 100%);">
+            <span class="news-emoji">🏆</span>
+          </div>
+          <div class="news-content">
+            <span class="news-tag">Résultat</span>
+            <h3>Victoire 3-1 contre FC Berne !</h3>
+            <p>Une performance exceptionnelle de notre équipe lors du derby régional. Lukas Müller auteur d'un doublé, complété par un but de Matteo Rossi.</p>
+            <div class="news-footer">
+              <span class="news-date">28 Mars 2026</span>
+              <a href="#" class="read-more">Lire la suite →</a>
+            </div>
+          </div>
+        </article>
+        <article class="news-card">
+          <div class="news-image" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
+            <span class="news-emoji">🤝</span>
+          </div>
+          <div class="news-content">
+            <span class="news-tag">Recrutement</span>
+            <h3>Nouveau transfert : Marco Schneider rejoint le club</h3>
+            <p>Le milieu de terrain de 24 ans arrive en provenance du FC Zurich pour renforcer notre effectif.</p>
+            <div class="news-footer">
+              <span class="news-date">22 Mars 2026</span>
+              <a href="#" class="read-more">Lire la suite →</a>
+            </div>
+          </div>
+        </article>
+        <article class="news-card">
+          <div class="news-image" style="background: linear-gradient(135deg, #27ae60 0%, #1a6b3c 100%);">
+            <span class="news-emoji">🏟️</span>
+          </div>
+          <div class="news-content">
+            <span class="news-tag">Infrastructure</span>
+            <h3>Rénovation du centre d'entraînement terminée</h3>
+            <p>Les nouveaux vestiaires et la salle de musculation sont désormais disponibles pour toutes les équipes du club.</p>
+            <div class="news-footer">
+              <span class="news-date">15 Mars 2026</span>
+              <a href="#" class="read-more">Lire la suite →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section class="section section-dark" id="equipe">
+    <div class="container">
+      <div class="section-header light">
+        <span class="section-tag">Les joueurs</span>
+        <h2>Notre Équipe</h2>
+        <p>Découvrez les joueurs qui portent les couleurs du FC Helvetia</p>
+      </div>
+      <div class="team-filters">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="gardiens">Gardiens</button>
+        <button class="filter-btn" data-filter="defenseurs">Défenseurs</button>
+        <button class="filter-btn" data-filter="milieux">Milieux</button>
+        <button class="filter-btn" data-filter="attaquants">Attaquants</button>
+      </div>
+      <div class="players-grid">
+
+        <div class="player-card" data-pos="gardiens">
+          <div class="player-avatar gk">
+            <span>1</span>
+          </div>
+          <div class="player-info">
+            <h4>David Favre</h4>
+            <span class="position">Gardien</span>
+            <div class="player-stats">
+              <div><strong>18</strong><small>Clean sheets</small></div>
+              <div><strong>94%</strong><small>Arrêts</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="defenseurs">
+          <div class="player-avatar def">
+            <span>4</span>
+          </div>
+          <div class="player-info">
+            <h4>Stefan Huber</h4>
+            <span class="position">Défenseur central</span>
+            <div class="player-stats">
+              <div><strong>2</strong><small>Buts</small></div>
+              <div><strong>87%</strong><small>Duels gagnés</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="defenseurs">
+          <div class="player-avatar def">
+            <span>5</span>
+          </div>
+          <div class="player-info">
+            <h4>Yannick Bauer</h4>
+            <span class="position">Arrière gauche</span>
+            <div class="player-stats">
+              <div><strong>3</strong><small>Passes déc.</small></div>
+              <div><strong>78%</strong><small>Passes réussies</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="milieux">
+          <div class="player-avatar mid">
+            <span>8</span>
+          </div>
+          <div class="player-info">
+            <h4>Marco Schneider</h4>
+            <span class="position">Milieu central</span>
+            <div class="player-stats">
+              <div><strong>5</strong><small>Buts</small></div>
+              <div><strong>12</strong><small>Passes déc.</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="milieux">
+          <div class="player-avatar mid">
+            <span>10</span>
+          </div>
+          <div class="player-info">
+            <h4>Antoine Dubois</h4>
+            <span class="position">Milieu offensif</span>
+            <div class="player-stats">
+              <div><strong>8</strong><small>Buts</small></div>
+              <div><strong>15</strong><small>Passes déc.</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="attaquants">
+          <div class="player-avatar fwd">
+            <span>9</span>
+          </div>
+          <div class="player-info">
+            <h4>Lukas Müller</h4>
+            <span class="position">Avant-centre</span>
+            <div class="player-stats">
+              <div><strong>22</strong><small>Buts</small></div>
+              <div><strong>7</strong><small>Passes déc.</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="attaquants">
+          <div class="player-avatar fwd">
+            <span>11</span>
+          </div>
+          <div class="player-info">
+            <h4>Matteo Rossi</h4>
+            <span class="position">Ailier droit</span>
+            <div class="player-stats">
+              <div><strong>14</strong><small>Buts</small></div>
+              <div><strong>9</strong><small>Passes déc.</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-card" data-pos="attaquants">
+          <div class="player-avatar fwd">
+            <span>7</span>
+          </div>
+          <div class="player-info">
+            <h4>Remy Fontaine</h4>
+            <span class="position">Ailier gauche</span>
+            <div class="player-stats">
+              <div><strong>10</strong><small>Buts</small></div>
+              <div><strong>11</strong><small>Passes déc.</small></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDRIER -->
+  <section class="section" id="calendrier">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Saison 2025/26</span>
+        <h2>Calendrier des Matchs</h2>
+        <p>Ne manquez aucune rencontre du FC Helvetia</p>
+      </div>
+      <div class="calendar-grid">
+
+        <div class="match-row result win">
+          <div class="match-status">Terminé</div>
+          <div class="match-date-col">
+            <span class="m-day">Mar</span>
+            <span class="m-date">28</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Helvetia</span>
+            <span class="m-score">3 – 1</span>
+            <span class="m-away">FC Berne</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>Stade du Lac</span>
+          </div>
+          <div class="match-result-badge win">V</div>
+        </div>
+
+        <div class="match-row result draw">
+          <div class="match-status">Terminé</div>
+          <div class="match-date-col">
+            <span class="m-day">Mar</span>
+            <span class="m-date">21</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Bâle B</span>
+            <span class="m-score">1 – 1</span>
+            <span class="m-away">FC Helvetia</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>St. Jakob-Park</span>
+          </div>
+          <div class="match-result-badge draw">N</div>
+        </div>
+
+        <div class="match-row result win">
+          <div class="match-status">Terminé</div>
+          <div class="match-date-col">
+            <span class="m-day">Mar</span>
+            <span class="m-date">14</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Helvetia</span>
+            <span class="m-score">2 – 0</span>
+            <span class="m-away">SC Lucerne B</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>Stade du Lac</span>
+          </div>
+          <div class="match-result-badge win">V</div>
+        </div>
+
+        <div class="match-row upcoming">
+          <div class="match-status upcoming-status">À venir</div>
+          <div class="match-date-col">
+            <span class="m-day">Avr</span>
+            <span class="m-date">12</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Helvetia</span>
+            <span class="m-score">VS</span>
+            <span class="m-away">FC Lausanne B</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>Stade du Lac • 15:00</span>
+          </div>
+          <a href="#contact" class="btn btn-sm">Billetterie</a>
+        </div>
+
+        <div class="match-row upcoming">
+          <div class="match-status upcoming-status">À venir</div>
+          <div class="match-date-col">
+            <span class="m-day">Avr</span>
+            <span class="m-date">19</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Zurich C</span>
+            <span class="m-score">VS</span>
+            <span class="m-away">FC Helvetia</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>Letziground • 16:00</span>
+          </div>
+          <a href="#contact" class="btn btn-sm">Billetterie</a>
+        </div>
+
+        <div class="match-row upcoming">
+          <div class="match-status upcoming-status">À venir</div>
+          <div class="match-date-col">
+            <span class="m-day">Avr</span>
+            <span class="m-date">26</span>
+          </div>
+          <div class="match-teams-col">
+            <span class="m-home">FC Helvetia</span>
+            <span class="m-score">VS</span>
+            <span class="m-away">Servette B</span>
+          </div>
+          <div class="match-meta">
+            <span>Ligue Régionale</span>
+            <span>Stade du Lac • 14:30</span>
+          </div>
+          <a href="#contact" class="btn btn-sm">Billetterie</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CLASSEMENT -->
+  <section class="section section-red">
+    <div class="container">
+      <div class="section-header light">
+        <span class="section-tag">Ligue Régionale</span>
+        <h2>Classement</h2>
+      </div>
+      <div class="table-wrapper">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Club</th>
+              <th>J</th>
+              <th>V</th>
+              <th>N</th>
+              <th>D</th>
+              <th>Buts</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank gold">1</span></td>
+              <td class="club-name">FC Berne</td>
+              <td>26</td><td>18</td><td>5</td><td>3</td><td>52:21</td>
+              <td><strong>59</strong></td>
+            </tr>
+            <tr class="highlight-row">
+              <td><span class="rank silver">2</span></td>
+              <td class="club-name">⚽ FC Helvetia</td>
+              <td>26</td><td>17</td><td>4</td><td>5</td><td>48:25</td>
+              <td><strong>55</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank bronze">3</span></td>
+              <td class="club-name">FC Lausanne B</td>
+              <td>26</td><td>15</td><td>6</td><td>5</td><td>44:28</td>
+              <td><strong>51</strong></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td class="club-name">SC Lucerne B</td>
+              <td>26</td><td>13</td><td>5</td><td>8</td><td>40:32</td>
+              <td><strong>44</strong></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td class="club-name">FC Bâle B</td>
+              <td>26</td><td>11</td><td>7</td><td>8</td><td>38:36</td>
+              <td><strong>40</strong></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td class="club-name">Servette B</td>
+              <td>26</td><td>10</td><td>4</td><td>12</td><td>33:41</td>
+              <td><strong>34</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Nous rejoindre</span>
+        <h2>Contact</h2>
+        <p>Pour toute question, adhesion ou partenariat, contactez-nous</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>FC Helvetia</h3>
+          <p>Fondé en 1923, le FC Helvetia est ouvert à tous les passionnés de football, amateurs ou confirmés.</p>
+          <div class="contact-items">
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <div>
+                <strong>Adresse</strong>
+                <p>Stade du Lac, Route du Football 12<br>1200 Genève, Suisse</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <div>
+                <strong>Téléphone</strong>
+                <p>+41 22 345 67 89</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">✉️</span>
+              <div>
+                <strong>Email</strong>
+                <p>info@fchelvetia.ch</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">🕐</span>
+              <div>
+                <strong>Entraînements</strong>
+                <p>Mar & Jeu : 18h30 – 20h30<br>Sam : 10h00 – 12h00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" placeholder="Votre nom" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="votre@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sujet">Sujet</label>
+            <select id="sujet">
+              <option value="">Choisir un sujet</option>
+              <option value="adhesion">Adhésion au club</option>
+              <option value="billetterie">Billetterie</option>
+              <option value="partenariat">Partenariat</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Envoyer le message</button>
+          <div class="form-success" id="form-success">
+            Message envoyé ! Nous vous répondrons dans les 24h.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">⚽ FC <strong>Helvetia</strong></div>
+          <p>Le club de football au cœur des Alpes suisses depuis 1923.</p>
+          <div class="social-links">
+            <a href="#" class="social-link">f</a>
+            <a href="#" class="social-link">in</a>
+            <a href="#" class="social-link">tw</a>
+            <a href="#" class="social-link">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#actualites">Actualités</a></li>
+            <li><a href="#equipe">Équipe</a></li>
+            <li><a href="#calendrier">Calendrier</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Le Club</h4>
+          <ul>
+            <li><a href="#">Notre histoire</a></li>
+            <li><a href="#">Direction</a></li>
+            <li><a href="#">Équipes jeunes</a></li>
+            <li><a href="#">Partenaires</a></li>
+            <li><a href="#">Shop</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Infos pratiques</h4>
+          <ul>
+            <li><a href="#">Devenir membre</a></li>
+            <li><a href="#">Billetterie</a></li>
+            <li><a href="#">Accès au stade</a></li>
+            <li><a href="#">Règlement intérieur</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FC Helvetia. Tous droits réservés. | Association sportive enregistrée en Suisse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
