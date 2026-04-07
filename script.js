@@ -20,33 +20,9 @@ navToggle.addEventListener('click', () => {
   navLinks.classList.toggle('open');
 });
 
-// Close menu on link click
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('open');
-  });
-});
-
-// ===========================
-// PLAYER FILTER
-// ===========================
-const filterBtns = document.querySelectorAll('.filter-btn');
-const playerCards = document.querySelectorAll('.player-card');
-
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const filter = btn.dataset.filter;
-    playerCards.forEach(card => {
-      if (filter === 'all' || card.dataset.pos === filter) {
-        card.style.display = 'block';
-        card.style.animation = 'fadeIn 0.3s ease';
-      } else {
-        card.style.display = 'none';
-      }
-    });
   });
 });
 
@@ -62,17 +38,17 @@ function handleSubmit(e) {
   btn.textContent = 'Envoi en cours...';
 
   setTimeout(() => {
-    btn.textContent = 'Message envoyé !';
-    btn.style.background = '#27ae60';
+    btn.textContent = 'Demande envoyee !';
+    btn.style.background = '#059669';
     success.style.display = 'block';
     e.target.reset();
 
     setTimeout(() => {
       btn.disabled = false;
-      btn.textContent = 'Envoyer le message';
+      btn.textContent = 'Demander mon audit gratuit';
       btn.style.background = '';
       success.style.display = 'none';
-    }, 4000);
+    }, 5000);
   }, 1000);
 }
 
@@ -87,23 +63,25 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
+      entry.target.classList.add('animate-in');
       observer.unobserve(entry.target);
     }
   });
 }, observerOptions);
 
-const animatedEls = document.querySelectorAll(
-  '.news-card, .player-card, .match-row, .contact-item'
-);
-
-animatedEls.forEach((el, i) => {
+document.querySelectorAll(
+  '.problem-card, .service-card, .type-card, .step-card, .stat-card, .reason-card, .contact-item'
+).forEach((el, i) => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(20px)';
-  el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s`;
+  el.style.transition = `opacity 0.6s ease ${i * 0.05}s, transform 0.6s ease ${i * 0.05}s`;
   observer.observe(el);
 });
+
+// Add CSS class for animation
+const style = document.createElement('style');
+style.textContent = '.animate-in { opacity: 1 !important; transform: translateY(0) !important; }';
+document.head.appendChild(style);
 
 // ===========================
 // SMOOTH SCROLL FOR ANCHORS
@@ -113,7 +91,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   });
 });
