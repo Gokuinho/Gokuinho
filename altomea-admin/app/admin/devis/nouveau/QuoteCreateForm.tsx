@@ -9,6 +9,33 @@ interface QuoteItem {
   unitPrice: number
 }
 
+interface CatalogService {
+  id: string
+  name: string
+  description: string
+  category: string
+  unitPrice: number
+  unit: string
+}
+
+const CATEGORY_LABELS: Record<string, string> = {
+  reseaux_sociaux: 'Réseaux sociaux',
+  visibilite_locale: 'Visibilité locale',
+  publicite: 'Publicité',
+  contenu: 'Contenu',
+  site_web: 'Site web',
+  fidelisation: 'Fidélisation',
+  autre: 'Autre',
+}
+
+const UNIT_LABELS: Record<string, string> = {
+  mois: '/mois',
+  heure: '/heure',
+  forfait: 'forfait',
+  post: '/post',
+  piece: '/pièce',
+}
+
 const inputStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,0.03)',
   border: '1px solid rgba(255,255,255,0.07)',
@@ -47,6 +74,51 @@ function getDefaultValidUntil(): string {
   return d.toISOString().slice(0, 10)
 }
 
+function ServiceRow({ service, onSelect }: { service: CatalogService; onSelect: (s: CatalogService) => void }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <div
+      onClick={() => onSelect(service)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        padding: '12px 16px',
+        cursor: 'pointer',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: hovered ? 'rgba(255,255,255,0.03)' : 'transparent',
+      }}
+    >
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 14, color: '#e8e8f0' }}>{service.name}</div>
+        {service.description && (
+          <div
+            style={{
+              fontSize: 11,
+              color: '#7a7a8e',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {service.description}
+          </div>
+        )}
+      </div>
+      <div style={{ textAlign: 'right', marginLeft: 16, flexShrink: 0 }}>
+        <div style={{ fontFamily: 'DM Mono, monospace', color: '#c9a84c', fontSize: 14 }}>
+          CHF {service.unitPrice.toFixed(2)}
+        </div>
+        <div style={{ fontSize: 10, color: '#7a7a8e' }}>
+          {UNIT_LABELS[service.unit] ?? service.unit}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function QuoteCreateForm() {
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
@@ -59,6 +131,13 @@ export default function QuoteCreateForm() {
 
   // Items
   const [items, setItems] = useState<QuoteItem[]>([{ description: '', quantity: 1, unitPrice: 0 }])
+
+  // Catalog picker
+  const [showCatalog, setShowCatalog] = useState(false)
+  const [catalogServices, setCatalogServices] = useState<CatalogService[]>([])
+  const [catalogLoading, setCatalogLoading] = useState(false)
+  const [catalogSearch, setCatalogSearch] = useState('')
+  const [catalogCategory, setCatalogCategory] = useState('all')
 
   // TVA & details
   const [tva, setTva] = useState(7.7)
@@ -77,6 +156,31 @@ export default function QuoteCreateForm() {
 
   function addItem() {
     setItems(prev => [...prev, { description: '', quantity: 1, unitPrice: 0 }])
+  }
+
+  async function openCatalog() {
+    setShowCatalog(true)
+    setCatalogLoading(true)
+    try {
+      const res = await fetch('/api/prestations?active=true')
+      const data = await res.json()
+      setCatalogServices(Array.isArray(data) ? data : [])
+    } catch {
+      setCatalogServices([])
+    } finally {
+      setCatalogLoading(false)
+    }
+  }
+
+  function selectService(service: CatalogService) {
+    setItems(prev => [...prev, {
+      description: service.name + (service.description ? ` — ${service.description}` : ''),
+      quantity: 1,
+      unitPrice: service.unitPrice,
+    }])
+    setShowCatalog(false)
+    setCatalogSearch('')
+    setCatalogCategory('all')
   }
 
   function removeItem(index: number) {
@@ -254,18 +358,32 @@ export default function QuoteCreateForm() {
             </div>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={addItem}
-          className="mt-3 text-[11px] tracking-widest uppercase px-3 py-1.5 transition-colors duration-200"
-          style={{
-            color: '#7a7a8e',
-            border: '1px solid rgba(255,255,255,0.07)',
-            background: 'rgba(255,255,255,0.02)',
-          }}
-        >
-          + Ajouter une ligne
-        </button>
+        <div className="flex gap-2 mt-3">
+          <button
+            type="button"
+            onClick={addItem}
+            className="text-[11px] tracking-widest uppercase px-3 py-1.5 transition-colors duration-200"
+            style={{
+              color: '#7a7a8e',
+              border: '1px solid rgba(255,255,255,0.07)',
+              background: 'rgba(255,255,255,0.02)',
+            }}
+          >
+            + Ajouter une ligne
+          </button>
+          <button
+            type="button"
+            onClick={openCatalog}
+            className="text-[11px] tracking-widest uppercase px-3 py-1.5 transition-colors duration-200"
+            style={{
+              color: '#c9a84c',
+              border: '1px solid rgba(201,168,76,0.3)',
+              background: 'rgba(201,168,76,0.05)',
+            }}
+          >
+            ◈ Catalogue
+          </button>
+        </div>
       </div>
 
       {/* Section Totaux */}
@@ -344,6 +462,108 @@ export default function QuoteCreateForm() {
           </div>
         </div>
       </div>
+
+      {/* Catalog modal */}
+      {showCatalog && (() => {
+        const filtered = catalogServices.filter(s => {
+          const matchCat = catalogCategory === 'all' || s.category === catalogCategory
+          const matchSearch = !catalogSearch || s.name.toLowerCase().includes(catalogSearch.toLowerCase())
+          return matchCat && matchSearch
+        })
+        return (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 50,
+              background: 'rgba(0,0,0,0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={() => setShowCatalog(false)}
+          >
+            <div
+              style={{
+                maxWidth: 576,
+                width: '100%',
+                border: '1px solid rgba(255,255,255,0.07)',
+                background: '#111118',
+                padding: 24,
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <span style={{ fontFamily: 'Syne, sans-serif', color: '#e8e8f0', fontSize: 15, fontWeight: 600 }}>
+                  Catalogue de prestations
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowCatalog(false)}
+                  style={{ color: '#7a7a8e', background: 'none', border: 'none', fontSize: 20, lineHeight: 1, cursor: 'pointer' }}
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* Search */}
+              <input
+                value={catalogSearch}
+                onChange={e => setCatalogSearch(e.target.value)}
+                placeholder="Rechercher..."
+                style={{ ...inputStyle, marginBottom: 12 }}
+              />
+
+              {/* Category tabs */}
+              <div className="flex flex-wrap gap-2" style={{ marginBottom: 16 }}>
+                {[['all', 'Tous'], ...Object.entries(CATEGORY_LABELS)].map(([key, label]) => {
+                  const active = catalogCategory === key
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setCatalogCategory(key)}
+                      className="text-[10px] uppercase tracking-widest px-3 py-1.5 cursor-pointer"
+                      style={{
+                        background: active ? 'rgba(201,168,76,0.1)' : 'transparent',
+                        color: active ? '#c9a84c' : '#7a7a8e',
+                        border: active ? '1px solid rgba(201,168,76,0.3)' : '1px solid rgba(255,255,255,0.07)',
+                      }}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Service list */}
+              <div
+                style={{
+                  maxHeight: 320,
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  background: 'rgba(255,255,255,0.02)',
+                }}
+              >
+                {catalogLoading ? (
+                  <div style={{ textAlign: 'center', padding: '24px 0', color: '#7a7a8e', fontSize: 13 }}>
+                    Chargement...
+                  </div>
+                ) : filtered.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '24px 0', color: '#7a7a8e', fontSize: 13 }}>
+                    Aucune prestation trouvée
+                  </div>
+                ) : filtered.map(service => (
+                  <ServiceRow key={service.id} service={service} onSelect={selectService} />
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Action buttons */}
       <div className="flex gap-3 flex-wrap">
