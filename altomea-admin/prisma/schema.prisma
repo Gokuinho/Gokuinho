@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  password     String
+  name         String    @default("Admin")
+  role         String    @default("client")
+  clientStatus String    @default("nouveau")
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  messages     Message[]
+}
+
+model Lead {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  restaurant String
+  message    String
+  status     String   @default("nouveau")
+  notes      String   @default("")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Invoice {
+  id           String   @id @default(cuid())
+  number       String   @unique
+  clientName   String
+  clientEmail  String   @default("")
+  clientUserId String?
+  items        String
+  subtotal     Float    @default(0)
+  tva          Float    @default(0)
+  total        Float    @default(0)
+  status       String   @default("brouillon")
+  dueDate      String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Prompt {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   @default("général")
+  content   String
+  tags      String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  clientId   String
+  senderRole String
+  content    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  client     User     @relation(fields: [clientId], references: [id])
+}
