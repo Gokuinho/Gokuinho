@@ -1,9 +1,9 @@
-import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
 const secret = process.env.NEXTAUTH_SECRET
 
-export async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret })
   const { pathname } = req.nextUrl
 
@@ -12,14 +12,16 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith('/login') ||
     pathname.startsWith('/unauthorized') ||
     pathname.startsWith('/api/auth') ||
-    pathname.match(/^\/factures\/[^/]+\/print/)
+    /^\/factures\/[^/]+\/print/.test(pathname)
   ) {
     return NextResponse.next()
   }
 
   // Non connecté → login
   if (!token) {
-    return NextResponse.redirect(new URL('/login', req.url))
+    const loginUrl = new URL('/login', req.url)
+    loginUrl.searchParams.set('callbackUrl', req.url)
+    return NextResponse.redirect(loginUrl)
   }
 
   const role = token.role as string
@@ -27,10 +29,10 @@ export async function middleware(req: NextRequest) {
   // Redirection depuis la racine selon le rôle
   if (pathname === '/') {
     const dest =
-      role === 'admin' ? '/admin/dashboard' :
+      role === 'admin'         ? '/admin/dashboard' :
       role === 'collaborateur' ? '/collaborateur/dashboard' :
-      role === 'comptable' ? '/comptable/dashboard' :
-      '/client/dashboard'
+      role === 'comptable'     ? '/comptable/dashboard' :
+                                 '/client/dashboard'
     return NextResponse.redirect(new URL(dest, req.url))
   }
 
