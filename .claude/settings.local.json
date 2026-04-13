@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Wix__WixSiteBuilder",
+      "mcp__claude_ai_Wix__pullSiteCreationJob",
+      "mcp__claude_ai_Wix__ListWixSites",
+      "mcp__claude_ai_Wix__WixREADME",
+      "mcp__claude_ai_Wix__ReadFullDocsArticle",
+      "mcp__claude_ai_Wix__CallWixSiteAPI"
+    ]
+  }
+}
