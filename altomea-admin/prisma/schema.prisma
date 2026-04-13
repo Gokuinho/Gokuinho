@@ -58,6 +58,25 @@ model Prompt {
   updatedAt DateTime @updatedAt
 }
 
+model Quote {
+  id             String   @id @default(cuid())
+  number         String   @unique
+  clientName     String
+  restaurantName String   @default("")
+  city           String   @default("")
+  clientEmail    String   @default("")
+  status         String   @default("brouillon")
+  items          String   @default("[]")
+  subtotal       Float    @default(0)
+  tva            Float    @default(7.7)
+  total          Float    @default(0)
+  validUntil     String   @default("")
+  notes          String   @default("")
+  clientUserId   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
 model Message {
   id         String   @id @default(cuid())
   clientId   String
