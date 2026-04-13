@@ -9,15 +9,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== 'admin') redirect('/login')
 
-  const [unreadMessages, newLeads] = await Promise.all([
+  const [unreadMessages, newLeads, pendingDevis] = await Promise.all([
     prisma.message.count({ where: { senderRole: 'client', read: false } }),
     prisma.lead.count({ where: { status: 'nouveau' } }),
+    prisma.quote.count({ where: { status: { in: ['envoyé'] } } }),
   ])
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: '◈' },
     { href: '/admin/leads', label: 'Demandes', icon: '◎', badge: newLeads },
     { href: '/admin/factures', label: 'Factures', icon: '◇' },
+    { href: '/admin/devis', label: 'Devis', icon: '◈', badge: pendingDevis },
     { href: '/admin/prompts', label: 'Bibliothèque', icon: '◉' },
     { href: '/admin/workspace', label: 'Espace IA', icon: '▲' },
     { href: '/admin/messages', label: 'Messages', icon: '◻', badge: unreadMessages },

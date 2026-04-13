@@ -12,7 +12,7 @@ export default async function proxy(req: NextRequest) {
     pathname.startsWith('/login') ||
     pathname.startsWith('/unauthorized') ||
     pathname.startsWith('/api/auth') ||
-    /^\/factures\/[^/]+\/print/.test(pathname)
+    /^\/(?:factures|devis)\/[^/]+\/print/.test(pathname)
   ) {
     return NextResponse.next()
   }
