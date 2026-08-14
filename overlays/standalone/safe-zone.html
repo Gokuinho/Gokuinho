@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Zones safe TikTok — calque de repérage</title>
+<style>
+/* ============================================================
+   OUTIL DE RÉGLAGE — À DÉSACTIVER AVANT DE PARTIR EN LIVE.
+   Place cette source TOUT EN HAUT de la scène verticale pour
+   voir exactement où l'interface TikTok recouvre ton contenu.
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 1080px; height: 1920px; overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #fff;
+}
+.zone {
+  position: absolute;
+  background: rgba(239, 68, 68, 0.22);
+  border: 3px dashed rgba(239, 68, 68, 0.9);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+.zone span {
+  font-size: 30px; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px #000;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 10px;
+}
+
+/* Bandeau supérieur : pseudo du live, compteur de viewers, croix */
+.top    { left: 0;    top: 0;     width: 1080px; height: 250px; }
+/* Colonne de droite : avatar, cœurs, partage, cadeaux */
+.right  { left: 880px; top: 250px; width: 200px;  height: 1670px; }
+/* Bas : commentaires, champ de saisie, boutons */
+.bottom { left: 0;    top: 1420px; width: 1080px; height: 500px; }
+
+/* Zone réellement exploitable */
+.safe {
+  position: absolute;
+  left: 0; top: 250px; width: 880px; height: 1170px;
+  border: 3px solid rgba(34, 197, 94, 0.95);
+  background: rgba(34, 197, 94, 0.07);
+}
+.safe span {
+  position: absolute; left: 20px; top: 20px;
+  font-size: 28px; font-weight: 800;
+  padding: 10px 18px; border-radius: 10px;
+  background: rgba(22, 101, 52, 0.85);
+}
+
+/* Règle graduée tous les 100 px — pour positionner au pixel près */
+.ruler { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.tick {
+  position: absolute; left: 0; width: 1080px; height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.tick b {
+  position: absolute; left: 6px; top: -22px;
+  font-size: 18px; font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  text-shadow: 0 1px 6px #000;
+}
+
+.hint {
+  position: absolute; left: 40px; top: 700px; width: 780px;
+  padding: 26px 32px; border-radius: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 24px; line-height: 1.55;
+}
+.hint b { color: #4ADE80; }
+</style>
+</head>
+<body>
+  <div class="ruler" id="ruler"></div>
+
+  <div class="zone top"><span>Bandeau TikTok — pseudo, viewers, fermeture</span></div>
+  <div class="zone right"><span>Boutons</span></div>
+  <div class="zone bottom"><span>Commentaires, cadeaux, saisie</span></div>
+
+  <div class="safe"><span>✓ Zone exploitable — 880 × 1170</span></div>
+
+  <div class="hint">
+    Les zones rouges sont recouvertes par l'interface TikTok.<br>
+    Tout ce qui doit rester lisible va dans le <b>cadre vert</b>.<br><br>
+    Ces limites sont une base fiable, mais elles varient un peu selon la taille
+    d'écran du spectateur. <b>Vérifie sur ton propre live</b> avant de figer,
+    puis désactive cette source.
+  </div>
+
+<script>
+  // Graduation horizontale tous les 100 px
+  const r = document.getElementById('ruler');
+  for (let y = 100; y < 1920; y += 100) {
+    const d = document.createElement('div');
+    d.className = 'tick';
+    d.style.top = y + 'px';
+    d.innerHTML = '<b>' + y + '</b>';
+    r.appendChild(d);
+  }
+</script>
+</body>
+</html>
