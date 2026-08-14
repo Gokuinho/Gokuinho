@@ -5,15 +5,15 @@
 <title>V-Jeu — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Emplacements — doivent correspondre EXACTEMENT aux sources OBS.
-     Le liseré est dessiné juste autour, il suit ces valeurs. */
+  /* Coordonnées alignées sur les scènes construites dans OBS.
+     Si tu déplaces une source, change ces valeurs : cadres, griffures
+     et étiquettes suivent automatiquement. */
   :root {
-    --game-x: 0px;    --game-y: 270px;   --game-w: 1080px; --game-h: 608px;
-    --cam-x:  40px;   --cam-y:  1020px;  --cam-w:  700px;  --cam-h:  394px;
+    --game-x: 0px;   --game-y: 260px;  --game-w: 1080px; --game-h: 608px;
+    --cam-x:  20px;  --cam-y:  900px;  --cam-w:  839px;  --cam-h:  472px;
   }
 
-  /* Le bandeau TikTok occupe déjà le haut : pas de pseudo en doublon,
-     le contenu démarre sous la zone réservée. */
+  /* Pas de pseudo en haut : le bandeau TikTok l'affiche déjà. */
 
   .game-frame {
     left: var(--game-x); top: calc(var(--game-y) - 5px);
@@ -35,62 +35,60 @@
     transform: rotate(180deg);
   }
 
-  /* Deux panneaux entre le gameplay et la webcam */
-  .panels {
+  /* Étiquettes qui chevauchent le bord bas des cadres — comme sur tes
+     overlays Twitch, où le libellé mord sur la webcam. */
+  .tab {
     position: absolute;
-    left: 40px; top: 908px;
-    width: 820px;
-    flex-direction: row; gap: 20px;
-  }
-  .panels .panel { flex: 1; height: 88px; padding: 0 20px; gap: 14px; }
-  .panels .panel .val { font-size: 30px; }
-
-  /* Étiquette de jeu, collée sous la webcam à droite */
-  .now {
-    position: absolute;
-    left: 776px; top: 1020px;
-    width: 84px; height: 394px;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(180deg, var(--red-500), var(--red-700));
-    --cut: 16px;
+    display: flex; align-items: center; gap: 14px;
+    height: 66px; padding: 0 24px;
+    background: linear-gradient(105deg, var(--red-500), var(--red-700) 60%, var(--red-900));
+    overflow: hidden;
+    --cut: 14px;
     clip-path: polygon(
       var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
       calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
     );
   }
-  .now span {
-    font-family: var(--display);
-    font-size: 44px; text-transform: uppercase; letter-spacing: .1em;
-    writing-mode: vertical-rl;
-    text-shadow: 0 3px 14px rgba(0, 0, 0, .5);
+  .tab::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-24deg,
+      transparent 0 22px, rgba(255,255,255,.08) 22px 29px, transparent 29px 58px);
   }
+  .tab .ico { width: 30px; flex: 0 0 30px; z-index: 1; }
+  .tab .ico svg { width: 100%; height: auto; fill: var(--white); display: block; }
+  .tab .txt {
+    z-index: 1;
+    font-family: var(--display);
+    font-size: 34px; text-transform: uppercase; letter-spacing: .04em;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, .55);
+  }
+  .tab .lead {
+    z-index: 1;
+    font-size: 20px; font-weight: 600; letter-spacing: .28em;
+    text-transform: uppercase; opacity: .85;
+  }
+
+  /* Jeu en cours — sur le bord bas du gameplay */
+  .tab.game { left: 20px; top: calc(var(--game-y) + var(--game-h) - 40px); }
+  /* Dernier follower — sur le bord bas de la webcam */
+  .tab.cam  { left: 20px; top: calc(var(--cam-y) + var(--cam-h) - 40px); }
 </style>
 </head>
 <body>
-  <!-- Cadre du gameplay -->
   <div class="notch game-frame"><div class="inner"></div></div>
-
-  <!-- Panneaux d'activité -->
-  <div class="panels">
-    <div class="panel">
-      <span class="ico" data-icon="heart"></span>
-      <span class="lbl"><b>Dernier</b><strong>Follower</strong></span>
-      <span class="val" data-p="follower">—</span>
-    </div>
-    <div class="panel">
-      <span class="ico" data-icon="star"></span>
-      <span class="lbl"><b>Dernier</b><strong>Abonné</strong></span>
-      <span class="val" data-p="abonne">—</span>
-    </div>
+  <div class="tab game">
+    <span class="ico" data-icon="twitch"></span>
+    <span class="txt" data-p="jeu">FiveM</span>
   </div>
 
-  <!-- Webcam -->
   <div class="notch cam-frame"><div class="inner"></div></div>
   <div class="claw tl"><i></i><i></i><i></i></div>
   <div class="claw br"><i></i><i></i><i></i></div>
-
-  <!-- Bandeau vertical : le jeu en cours -->
-  <div class="now"><span data-p="jeu">FiveM</span></div>
+  <div class="tab cam">
+    <span class="ico" data-icon="heart"></span>
+    <span class="lead">Dernier</span>
+    <span class="txt" data-p="follower">greatace_xset</span>
+  </div>
 
 <script src="common.js"></script>
 </body>

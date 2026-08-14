@@ -5,14 +5,22 @@
 <title>V-Parler — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Webcam plein cadre — le visage porte la scène. */
-  :root { --cam-x: 40px; --cam-y: 420px; --cam-w: 840px; --cam-h: 472px; }
+  /* Coordonnées alignées sur la scène construite dans OBS :
+     webcam en haut, gameplay en dessous. */
+  :root {
+    --cam-x:  20px; --cam-y:  380px; --cam-w: 839px; --cam-h: 472px;
+    --game-x: 20px; --game-y: 900px; --game-w: 839px; --game-h: 472px;
+  }
 
   .cam-frame {
     left: calc(var(--cam-x) - 5px); top: calc(var(--cam-y) - 5px);
     width: calc(var(--cam-w) + 10px); height: calc(var(--cam-h) + 10px);
   }
-  .cam-frame > .inner { background: transparent; }
+  .game-frame {
+    left: calc(var(--game-x) - 5px); top: calc(var(--game-y) - 5px);
+    width: calc(var(--game-w) + 10px); height: calc(var(--game-h) + 10px);
+  }
+  .cam-frame > .inner, .game-frame > .inner { background: transparent; }
 
   .claw.tl { left: calc(var(--cam-x) - 24px); top: calc(var(--cam-y) - 26px); }
   .claw.br {
@@ -21,37 +29,35 @@
     transform: rotate(180deg);
   }
 
-  .topic {
+  .tab {
     position: absolute;
-    left: 40px; top: 940px; width: 840px;
-    padding: 30px 34px;
-    background: linear-gradient(105deg, var(--red-600) 0%, var(--red-700) 55%, var(--red-900) 100%);
+    display: flex; align-items: center; gap: 14px;
+    height: 66px; padding: 0 24px;
+    background: linear-gradient(105deg, var(--red-500), var(--red-700) 60%, var(--red-900));
     overflow: hidden;
-    --cut: 20px;
+    --cut: 14px;
     clip-path: polygon(
       var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
       calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
     );
   }
-  .topic::before {
+  .tab::before {
     content: ""; position: absolute; inset: 0;
     background: repeating-linear-gradient(-24deg,
-      transparent 0 26px, rgba(255,255,255,.07) 26px 34px, transparent 34px 70px);
+      transparent 0 22px, rgba(255,255,255,.08) 22px 29px, transparent 29px 58px);
   }
-  .topic b {
-    position: relative; display: block;
-    font-size: 24px; font-weight: 600; letter-spacing: .32em;
-    text-transform: uppercase; opacity: .85; margin-bottom: 8px;
+  .tab .lead {
+    z-index: 1; font-size: 20px; font-weight: 600; letter-spacing: .28em;
+    text-transform: uppercase; opacity: .85;
   }
-  .topic strong {
-    position: relative; display: block;
-    font-family: var(--display);
-    font-size: 58px; text-transform: uppercase; letter-spacing: .02em;
+  .tab .txt {
+    z-index: 1; font-family: var(--display);
+    font-size: 34px; text-transform: uppercase; letter-spacing: .04em;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, .55);
   }
 
-  .block { position: absolute; left: 0; right: 0; top: 1140px; }
-  .block .socials { align-items: flex-start; padding-left: 40px; }
-  .block .socials-title { text-align: left; padding-left: 40px; }
+  /* Sujet du moment — chevauche le bas de la webcam */
+  .tab.topic { left: 20px; top: calc(var(--cam-y) + var(--cam-h) - 40px); }
 </style>
 </head>
 <body>
@@ -63,19 +69,12 @@
   <div class="notch cam-frame"><div class="inner"></div></div>
   <div class="claw tl"><i></i><i></i><i></i></div>
   <div class="claw br"><i></i><i></i><i></i></div>
-
-  <div class="topic">
-    <b>On parle de</b>
-    <strong data-p="sujet">Vos questions</strong>
+  <div class="tab topic">
+    <span class="lead">On parle de</span>
+    <span class="txt" data-p="sujet">Vos questions</span>
   </div>
 
-  <div class="block">
-    <div class="socials-title">Restez connectés</div>
-    <div class="socials">
-      <div class="chip"><span class="badge" data-icon="twitch"></span><span class="name" data-p="twitch">ItsGokTV</span></div>
-      <div class="chip"><span class="badge" data-icon="instagram"></span><span class="name" data-p="instagram">ItsGokTV</span></div>
-    </div>
-  </div>
+  <div class="notch game-frame"><div class="inner"></div></div>
 
 <script src="common.js"></script>
 </body>
