@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>V-Jeu — overlay vertical</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* Emplacements — ajuste ici si tu déplaces tes sources dans OBS.
+     Ces valeurs doivent correspondre EXACTEMENT à la position/taille
+     de tes sources vidéo, sinon le liseré sera décalé. */
+  :root {
+    --slot-game-x: 0px;    --slot-game-y: 250px;
+    --slot-game-w: 1080px; --slot-game-h: 608px;
+
+    --slot-cam-x: 40px;    --slot-cam-y: 1040px;
+    --slot-cam-w: 480px;   --slot-cam-h: 270px;
+  }
+
+  .slot-game {
+    left: var(--slot-game-x); top: var(--slot-game-y);
+    width: var(--slot-game-w); height: var(--slot-game-h);
+    border-radius: 0; border-left: 0; border-right: 0;
+  }
+  .slot-game::after { border-radius: 0; }
+
+  .slot-cam {
+    left: var(--slot-cam-x); top: var(--slot-cam-y);
+    width: var(--slot-cam-w); height: var(--slot-cam-h);
+  }
+
+  /* Étiquette sous la webcam */
+  .cam-tag {
+    position: absolute;
+    left: var(--slot-cam-x);
+    top: calc(var(--slot-cam-y) + var(--slot-cam-h) + 18px);
+    padding: 10px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    font-size: 26px; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Bandeau titre entre le gameplay et la webcam */
+  .strip {
+    position: absolute;
+    left: 40px; top: 900px;
+    width: var(--safe-right);
+    padding: 26px 34px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+  .strip .label {
+    font-size: 22px; font-weight: 800; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--accent-2);
+    margin-bottom: 10px;
+  }
+  .strip .value {
+    font-size: 40px; font-weight: 800; letter-spacing: -0.02em;
+  }
+
+  /* Liseré d'accent vertical, côté gauche — repère visuel discret */
+  .rail {
+    position: absolute;
+    left: 0; top: var(--game-y); bottom: 500px;
+    width: 6px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-2), transparent);
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="aura"></div>
+  <div class="grid"></div>
+  <div class="rail"></div>
+
+  <div class="header">
+    <div class="pseudo" id="pseudo">itsgoktv</div>
+    <div class="badge"><span class="dot"></span>LIVE</div>
+  </div>
+
+  <div class="slot slot-game"></div>
+
+  <div class="strip">
+    <div class="label">En direct</div>
+    <div class="value" id="titre">FiveM · RP</div>
+  </div>
+
+  <div class="slot slot-cam"></div>
+  <div class="cam-tag" id="camtag">itsgoktv</div>
+
+  <div class="ui-fade"></div>
+
+<script>
+  // Personnalisation par l'URL, sans toucher au fichier :
+  // v-jeu.html?name=itsgoktv&titre=FiveM%20%C2%B7%20RP
+  const q = new URLSearchParams(location.search);
+  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
+  set('pseudo', 'name');
+  set('camtag', 'name');
+  set('titre',  'titre');
+  const accent = q.get('accent');
+  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
+</script>
+</body>
+</html>

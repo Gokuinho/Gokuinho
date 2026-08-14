@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>V-Fin — écran de fin</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  .center { top: 640px; }
+  .cta {
+    position: absolute;
+    left: 40px; top: 1140px;
+    width: var(--safe-right);
+    padding: 34px 40px;
+    border-radius: 24px;
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--accent) 30%, transparent),
+      color-mix(in srgb, var(--accent-2) 18%, transparent));
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    text-align: center;
+  }
+  .cta .big {
+    font-size: 46px; font-weight: 900; letter-spacing: -0.02em;
+  }
+  .cta .small {
+    margin-top: 10px;
+    font-size: 28px; color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="aura"></div>
+  <div class="grid"></div>
+
+  <div class="header">
+    <div class="pseudo" id="pseudo">itsgoktv</div>
+  </div>
+
+  <div class="center">
+    <div class="kicker">C'est terminé</div>
+    <div class="title">MERCI<br>D'AVOIR<br>SUIVI</div>
+    <div class="subtitle" id="sous">On se retrouve très vite pour le prochain live</div>
+  </div>
+
+  <div class="cta">
+    <div class="big">Abonne-toi ↑</div>
+    <div class="small">pour être prévenu du prochain direct</div>
+  </div>
+
+  <div class="socials" style="top: 1330px;">
+    <div class="social"><span class="tag">Twitch</span><span id="tw">itsgoktv</span></div>
+    <div class="social"><span class="tag">TikTok</span><span id="tk">@itsgoktv</span></div>
+  </div>
+
+  <div class="ui-fade"></div>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
+  set('pseudo', 'name'); set('tw', 'twitch'); set('tk', 'tiktok'); set('sous', 'sous');
+  const accent = q.get('accent');
+  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
+</script>
+</body>
+</html>

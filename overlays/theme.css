@@ -1,0 +1,205 @@
+/* ============================================================
+   Thème partagé — overlays TikTok vertical (1080x1920)
+   Change les valeurs ci-dessous pour tout re-styler d'un coup.
+   ============================================================ */
+
+:root {
+  /* --- Identité : les 3 lignes à personnaliser --- */
+  --accent:      #8B5CF6;   /* violet principal */
+  --accent-2:    #22D3EE;   /* cyan secondaire  */
+  --bg:          #0A0A0F;   /* fond profond     */
+
+  /* --- Dérivés (pas besoin d'y toucher) --- */
+  --bg-soft:     #12121C;
+  --line:        rgba(255, 255, 255, 0.08);
+  --text:        #F4F4F8;
+  --text-dim:    rgba(244, 244, 248, 0.55);
+  --glow:        0 0 40px color-mix(in srgb, var(--accent) 45%, transparent);
+
+  /* --- Géométrie TikTok 1080x1920 ---
+     Zones mesurées pour rester hors de l'UI TikTok. */
+  --safe-top:    250px;   /* sous le bandeau haut  */
+  --safe-bottom: 1420px;  /* au-dessus des commentaires */
+  --safe-right:  880px;   /* à gauche des boutons  */
+
+  --game-y:      250px;
+  --game-h:      608px;
+
+  --font: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system,
+          "Helvetica Neue", Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Variante transparente : à utiliser quand l'overlay passe AU-DESSUS
+   du gameplay. Ajoute class="ghost" sur <body>. */
+body.ghost { background: transparent; }
+
+/* ---------- Fond animé : dégradé lent, très peu coûteux ---------- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 800px at 15% 8%,
+      color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
+    radial-gradient(1000px 900px at 85% 92%,
+      color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 60%),
+    linear-gradient(170deg, var(--bg) 0%, var(--bg-soft) 55%, var(--bg) 100%);
+}
+
+/* Grille discrète — donne de la texture sans bruit visuel */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 78%);
+  opacity: 0.5;
+}
+
+/* Halo lent — animation sur transform uniquement (GPU, ~0 % CPU) */
+.aura {
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  left: 90px;
+  top: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--accent) 30%, transparent), transparent 65%);
+  filter: blur(60px);
+  animation: drift 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes drift {
+  from { transform: translate3d(-40px, -30px, 0) scale(1); }
+  to   { transform: translate3d(40px, 40px, 0) scale(1.12); }
+}
+
+/* ---------- Cadre d'emplacement média ---------- */
+/* Se place SOUS la source vidéo dans OBS : seul le liseré dépasse. */
+.slot {
+  position: absolute;
+  border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  border-radius: 18px;
+  box-shadow: var(--glow), inset 0 0 60px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+}
+.slot::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.9;
+}
+
+/* ---------- En-tête pseudo + LIVE ---------- */
+.header {
+  position: absolute;
+  top: 90px; left: 40px;
+  display: flex; align-items: center; gap: 18px;
+}
+.pseudo {
+  font-size: 46px; font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+}
+.badge {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px 9px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-size: 26px; font-weight: 800; letter-spacing: 0.12em;
+}
+.dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  background: #fff;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+/* ---------- Titre central (Début / Pause / Fin) ---------- */
+.center {
+  position: absolute;
+  left: 0; right: 0;
+  top: 620px;
+  text-align: center;
+  padding: 0 100px;
+}
+.kicker {
+  font-size: 30px; font-weight: 700;
+  letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 28px;
+}
+.title {
+  font-size: 118px; font-weight: 900;
+  line-height: 0.94; letter-spacing: -0.035em;
+  background: linear-gradient(135deg, #fff 25%, var(--accent) 75%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle {
+  margin-top: 34px;
+  font-size: 34px; font-weight: 500;
+  color: var(--text-dim); line-height: 1.5;
+}
+
+/* ---------- Compte à rebours ---------- */
+.timer {
+  margin-top: 60px;
+  font-size: 150px; font-weight: 900;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: var(--glow);
+}
+
+/* ---------- Bandeau réseaux (bas de zone safe) ---------- */
+.socials {
+  position: absolute;
+  left: 40px; top: 1300px;
+  width: var(--safe-right);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.social {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 26px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+  font-size: 30px; font-weight: 600;
+}
+.social .tag {
+  font-size: 22px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-2);
+  min-width: 120px;
+}
+
+/* ---------- Rappel visuel de la zone réservée TikTok ---------- */
+/* Léger dégradé vers le noir : le texte des commentaires reste lisible. */
+.ui-fade {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 460px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  pointer-events: none;
+}
