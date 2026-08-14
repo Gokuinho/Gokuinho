@@ -2,82 +2,85 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>V-Début — écran d'attente</title>
+<title>V-Début — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Anneau de progression autour du compte à rebours */
-  .ring { position: absolute; left: 290px; top: 980px; width: 500px; height: 500px; }
-  .ring svg { transform: rotate(-90deg); }
-  .ring .track { stroke: rgba(255, 255, 255, 0.08); }
-  .ring .fill {
-    stroke: url(#g); stroke-linecap: round;
-    transition: stroke-dashoffset 1s linear;
-    filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 70%, transparent));
-  }
-  .ring .timer {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 130px; font-weight: 900; letter-spacing: -0.04em;
+  .center.titles { top: 560px; }
+  .display { font-size: 140px; }
+  .kicker  { margin-bottom: 26px; }
+
+  /* Compte à rebours — chiffres condensés + jauge à coins entaillés */
+  .count { position: absolute; left: 0; right: 0; top: 900px; text-align: center; }
+  .count .num {
+    font-family: var(--display);
+    font-size: 190px; line-height: .9;
+    letter-spacing: .02em;
     font-variant-numeric: tabular-nums;
-    margin: 0;
+    text-shadow: 0 0 60px rgba(255, 60, 90, .6), 0 10px 40px rgba(0, 0, 0, .8);
   }
+  .gauge {
+    position: relative;
+    width: 620px; height: 14px;
+    margin: 34px auto 0;
+    background: rgba(255, 255, 255, .12);
+    --cut: 7px;
+    clip-path: polygon(
+      var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+    );
+  }
+  .gauge i {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--red-600), var(--hot));
+    box-shadow: 0 0 26px rgba(255, 92, 116, .9);
+    transition: width 1s linear;
+  }
+
+  .block { position: absolute; left: 0; right: 0; top: 1180px; }
 </style>
 </head>
 <body>
-  <div class="backdrop"></div>
-  <div class="aura"></div>
-  <div class="grid"></div>
-
-  <div class="header">
-    <div class="pseudo" id="pseudo">itsgoktv</div>
+  <div class="topbar">
+    <div class="handle" data-p="name">ItsGokTV</div>
+    <div class="live"><span class="pip"></span>LIVE</div>
   </div>
 
-  <div class="center">
-    <div class="kicker">Bientôt en direct</div>
-    <div class="title">ÇA<br>COMMENCE</div>
-    <div class="subtitle" id="sous">Installe-toi, ça démarre dans un instant</div>
+  <div class="center titles">
+    <div class="kicker">Ça arrive</div>
+    <div class="display">On commence</div>
   </div>
 
-  <div class="ring">
-    <svg width="500" height="500">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%"   stop-color="var(--accent)"/>
-          <stop offset="100%" stop-color="var(--accent-2)"/>
-        </linearGradient>
-      </defs>
-      <circle class="track" cx="250" cy="250" r="225" fill="none" stroke-width="14"/>
-      <circle class="fill"  cx="250" cy="250" r="225" fill="none" stroke-width="14"
-              id="arc" stroke-dasharray="1413.7" stroke-dashoffset="0"/>
-    </svg>
-    <div class="timer" id="t">10:00</div>
+  <div class="count">
+    <div class="num" id="num">10:00</div>
+    <div class="gauge"><i id="fill" style="width:100%"></i></div>
   </div>
 
-  <div class="ui-fade"></div>
+  <div class="block">
+    <div class="socials-title">Restez connectés</div>
+    <div class="socials">
+      <div class="chip"><span class="badge" data-icon="twitch"></span><span class="name" data-p="twitch">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="instagram"></span><span class="name" data-p="instagram">ItsGokTV</span></div>
+    </div>
+  </div>
 
+<script src="common.js"></script>
 <script>
-  // v-debut.html?min=10  → compte à rebours de 10 minutes
-  const q = new URLSearchParams(location.search);
-  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
-  set('pseudo', 'name'); set('sous', 'sous');
-  const accent = q.get('accent');
-  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
+  // v-debut.html?min=10 → durée du compte à rebours
+  window.addEventListener('DOMContentLoaded', () => {
+    const total = Math.max(1, parseInt(param('min', '10'), 10) * 60);
+    const num = document.getElementById('num');
+    const fill = document.getElementById('fill');
+    let left = total;
 
-  const total = Math.max(1, parseInt(q.get('min') || '10', 10) * 60);
-  const CIRC  = 1413.7;
-  const el    = document.getElementById('t');
-  const arc   = document.getElementById('arc');
-  let left    = total;
-
-  function tick() {
-    const m = Math.floor(left / 60), s = left % 60;
-    el.textContent = m + ':' + String(s).padStart(2, '0');
-    arc.setAttribute('stroke-dashoffset', CIRC * (1 - left / total));
-    if (left <= 0) { el.textContent = "C'EST PARTI"; el.style.fontSize = '62px'; return; }
-    left--;
-    setTimeout(tick, 1000);
-  }
-  tick();
+    (function tick() {
+      const m = Math.floor(left / 60), s = left % 60;
+      num.textContent = m + ':' + String(s).padStart(2, '0');
+      fill.style.width = (left / total * 100) + '%';
+      if (left <= 0) { num.textContent = "C'EST PARTI"; num.style.fontSize = '108px'; return; }
+      left--;
+      setTimeout(tick, 1000);
+    })();
+  });
 </script>
 </body>
 </html>

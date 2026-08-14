@@ -1,18 +1,21 @@
-# Overlays verticaux TikTok — 1080 × 1920
+# Overlays verticaux ItsGokTV — 1080 × 1920
 
-Six fichiers HTML à ajouter dans OBS en **source navigateur**. Aucune dépendance
-externe : pas de CDN, pas de police à télécharger, tout est local. Les animations
-n'utilisent que `transform` et `opacity`, donc elles tournent sur le GPU et ne
-coûtent quasiment rien en CPU — important quand quatre encodages tournent déjà.
+Déclinaison 9:16 de l'identité rouge et noir des overlays Twitch : obliques
+animées, typographie condensée massive, cadres à coins entaillés, panneaux
+d'activité. Cinq écrans à ajouter dans OBS en **source navigateur**, plus un
+calque de repérage.
 
 | Fichier | Scène | Rôle |
 | --- | --- | --- |
-| `v-jeu.html` | V-Jeu | Fond + cadres pour le gameplay et la webcam |
-| `v-parler.html` | V-Parler | Webcam plein cadre + sujet du moment |
-| `v-debut.html` | V-Début | Écran d'attente avec compte à rebours animé |
-| `v-pause.html` | V-Pause | Écran de pause |
-| `v-fin.html` | V-Fin | Écran de fin + appel à l'abonnement |
+| `v-jeu.html` | V-Jeu | Cadres gameplay + webcam, panneaux follower/abonné, bandeau du jeu |
+| `v-parler.html` | V-Parler | Webcam plein cadre, sujet du moment, réseaux |
+| `v-debut.html` | V-Début | Compte à rebours avec jauge |
+| `v-pause.html` | V-Pause | « Je reviens / Tout de suite » |
+| `v-fin.html` | V-Fin | « Le stream / Se termine » + appel à l'abonnement |
 | `safe-zone.html` | *(outil)* | Calque de repérage des zones TikTok |
+
+Fichiers communs : `theme.css` (palette, typo, composants) et `common.js`
+(fond animé, icônes SVG, paramètres d'URL).
 
 ---
 
@@ -25,92 +28,106 @@ Pour chaque scène verticale, dans le dock **Aitum Vertical** :
 3. **Largeur `1080`**, **Hauteur `1920`**
 4. Coche **Fermer la source quand elle est invisible** — libère le CPU sur les
    scènes inactives
-5. **OK**, puis place la source **tout en bas** de la liste (c'est le fond)
-
-Ensuite, ajoute par-dessus tes sources vidéo (`Capture de jeu 2`, `Webcam`) aux
-positions indiquées ci-dessous.
+5. **OK**, puis place la source **tout en bas** de la liste : c'est le fond, tes
+   sources vidéo passent par-dessus
 
 ---
 
 ## Positions à respecter
 
-Les cadres dessinés dans `v-jeu.html` supposent ces coordonnées. Si tu déplaces
-une source, modifie les variables en haut du fichier pour que le liseré suive.
+Les cadres sont dessinés autour de ces rectangles. Si tu déplaces une source,
+modifie les variables `:root` en haut du fichier concerné pour que le liseré suive.
 
 **V-Jeu**
 
 | Source | Position | Taille |
 | --- | --- | --- |
-| Capture de jeu 2 | `0, 250` | `1080 × 608` |
-| Webcam | `40, 1040` | `480 × 270` |
+| Capture de jeu 2 | `0, 270` | `1080 × 608` |
+| Webcam | `40, 1020` | `700 × 394` |
 
 **V-Parler**
 
 | Source | Position | Taille |
 | --- | --- | --- |
-| Webcam | `0, 400` | `1080 × 608` |
+| Webcam | `40, 420` | `840 × 472` |
 
-> La webcam de V-Jeu a été agrandie (`480 × 270` au lieu de `432 × 243`) et
-> remontée à `y = 1040`. Son bord bas tombe ainsi à `1310`, avec 110 px de marge
-> avant la zone des commentaires — au lieu d'être à la limite.
+Toutes les valeurs tiennent dans la zone exploitable TikTok : `y` entre 250 et
+1420, `x` sous 880. Seul le gameplay de V-Jeu occupe la largeur complète — ses
+bords droits passent sous la colonne de boutons TikTok, ce qui est le compromis
+habituel en vertical. Si le HUD de ton jeu est collé au bord droit, réduis
+`--game-w` à `880px`.
 
 ---
 
 ## Personnalisation
 
-### Par l'URL, sans éditer les fichiers
+### Par l'URL, sans ouvrir les fichiers
 
-Ajoute des paramètres à la fin du chemin dans la source navigateur :
+Ajoute les paramètres au chemin de la source navigateur :
 
 ```
-v-jeu.html?name=itsgoktv&titre=FiveM · RP
-v-debut.html?min=5&name=itsgoktv
+v-jeu.html?jeu=FiveM&follower=greatace_xset
+v-debut.html?min=5
 v-pause.html?sous=Je reviens dans 5 minutes
-v-parler.html?sujet=Vos questions&tiktok=@itsgoktv
+v-parler.html?sujet=Vos questions
+v-fin.html?accent=1E90FF
 ```
 
 | Paramètre | Effet | Fichiers |
 | --- | --- | --- |
-| `name` | Pseudo affiché | tous |
-| `accent` | Couleur d'accent, en hexa sans `#` (ex. `accent=F43F5E`) | tous |
-| `titre` | Ligne « En direct » | `v-jeu` |
+| `name` | Pseudo du bandeau | tous sauf `v-jeu` |
+| `accent` | Couleur dominante, hexa sans `#` | tous |
+| `jeu` | Bandeau vertical du jeu | `v-jeu` |
+| `follower`, `abonne` | Valeurs des panneaux | `v-jeu` |
 | `sujet` | Ligne « On parle de » | `v-parler` |
 | `sous` | Sous-titre | `v-debut`, `v-pause`, `v-fin` |
 | `min` | Durée du compte à rebours, en minutes | `v-debut` |
-| `twitch`, `tiktok` | Pseudos des réseaux | `v-parler`, `v-pause`, `v-fin` |
+| `twitch`, `instagram`, `youtube` | Pseudos réseaux | `v-parler`, `v-pause`, `v-fin` |
 
-### En profondeur
+### Palette
 
-Ouvre `theme.css` : les trois premières variables suffisent à changer toute
-l'identité visuelle des six écrans d'un coup.
+Les variables en haut de `theme.css` pilotent les six écrans d'un coup :
 
 ```css
---accent:   #8B5CF6;   /* violet principal */
---accent-2: #22D3EE;   /* cyan secondaire  */
---bg:       #0A0A0F;   /* fond profond     */
+--ink:     #0A0406;   /* noir de fond   */
+--red-500: #D91F35;   /* rouge principal */
+--hot:     #FF5C74;   /* rouge vif des obliques */
 ```
 
----
+### Panneaux d'activité en temps réel
 
-## L'outil de repérage
-
-`safe-zone.html` est le fichier le plus utile de tous, et il ne sert qu'une fois.
-
-Ajoute-le **tout en haut** de ta scène verticale : il affiche en rouge les trois
-zones recouvertes par l'interface TikTok (bandeau haut, colonne de boutons à
-droite, commentaires en bas), en vert la zone réellement exploitable, et une
-graduation tous les 100 px pour positionner tes sources au pixel près.
-
-Lance un live en privé, compare avec ton téléphone, ajuste — puis **décoche la
-source avant de partir en direct**.
-
-Ces limites sont fiables comme point de départ, mais l'interface TikTok varie
-légèrement selon la taille d'écran du spectateur. Rien ne remplace une
-vérification sur ton propre live.
+Les panneaux `Dernier follower` / `Dernier abonné` de `v-jeu.html` affichent une
+valeur statique passée par l'URL. Pour qu'ils se mettent à jour tout seuls, garde
+plutôt tes widgets 6klabs ou StreamElements en source navigateur par-dessus — ils
+sont déjà connectés à ton compte. Les panneaux d'ici servent de repli, ou de
+gabarit visuel si tu veux recréer les tiens au même format.
 
 ---
 
-## Vérifier le rendu sans OBS
+## Le calque de repérage
 
-Double-clique simplement sur un fichier `.html` : il s'ouvre dans ton navigateur.
-Réduis le zoom à 50 % (`Ctrl` + `-`) pour voir les 1920 px de haut d'un coup.
+`safe-zone.html` affiche en rouge les zones recouvertes par l'interface TikTok
+(bandeau haut, colonne de boutons, commentaires), en vert la zone exploitable, et
+une graduation tous les 100 px.
+
+Place-le **tout en haut** de la scène pendant le réglage, lance un live en privé,
+compare avec ton téléphone — puis **décoche la source avant de partir en direct**.
+
+---
+
+## Polices
+
+Les titres utilisent **Anton** et **Barlow Condensed**, chargées depuis Google
+Fonts. Si le réseau est indisponible au démarrage d'OBS, le repli est
+`Haettenschweiler` puis `Impact`, présentes sur Windows : le rendu reste
+condensé et lourd, très proche.
+
+Pour supprimer toute dépendance réseau, télécharge les deux polices, installe-les
+sur Windows et retire la ligne `@import` en tête de `theme.css`.
+
+---
+
+## Voir le rendu sans OBS
+
+Double-clique sur un `.html` : il s'ouvre dans ton navigateur. Réduis le zoom à
+50 % (`Ctrl` + `-`) pour voir les 1920 px de haut d'un coup.

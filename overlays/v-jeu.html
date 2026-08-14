@@ -2,107 +2,96 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>V-Jeu — overlay vertical</title>
+<title>V-Jeu — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Emplacements — ajuste ici si tu déplaces tes sources dans OBS.
-     Ces valeurs doivent correspondre EXACTEMENT à la position/taille
-     de tes sources vidéo, sinon le liseré sera décalé. */
+  /* Emplacements — doivent correspondre EXACTEMENT aux sources OBS.
+     Le liseré est dessiné juste autour, il suit ces valeurs. */
   :root {
-    --slot-game-x: 0px;    --slot-game-y: 250px;
-    --slot-game-w: 1080px; --slot-game-h: 608px;
-
-    --slot-cam-x: 40px;    --slot-cam-y: 1040px;
-    --slot-cam-w: 480px;   --slot-cam-h: 270px;
+    --game-x: 0px;    --game-y: 270px;   --game-w: 1080px; --game-h: 608px;
+    --cam-x:  40px;   --cam-y:  1020px;  --cam-w:  700px;  --cam-h:  394px;
   }
 
-  .slot-game {
-    left: var(--slot-game-x); top: var(--slot-game-y);
-    width: var(--slot-game-w); height: var(--slot-game-h);
-    border-radius: 0; border-left: 0; border-right: 0;
-  }
-  .slot-game::after { border-radius: 0; }
+  /* Le bandeau TikTok occupe déjà le haut : pas de pseudo en doublon,
+     le contenu démarre sous la zone réservée. */
 
-  .slot-cam {
-    left: var(--slot-cam-x); top: var(--slot-cam-y);
-    width: var(--slot-cam-w); height: var(--slot-cam-h);
+  .game-frame {
+    left: var(--game-x); top: calc(var(--game-y) - 5px);
+    width: var(--game-w); height: calc(var(--game-h) + 10px);
+    --cut: 0px;
+  }
+  .game-frame > .inner { --cut: 0px; background: transparent; }
+
+  .cam-frame {
+    left: calc(var(--cam-x) - 5px); top: calc(var(--cam-y) - 5px);
+    width: calc(var(--cam-w) + 10px); height: calc(var(--cam-h) + 10px);
+  }
+  .cam-frame > .inner { background: transparent; }
+
+  .claw.tl { left: calc(var(--cam-x) - 24px); top: calc(var(--cam-y) - 26px); }
+  .claw.br {
+    left: calc(var(--cam-x) + var(--cam-w) - 66px);
+    top:  calc(var(--cam-y) + var(--cam-h) - 44px);
+    transform: rotate(180deg);
   }
 
-  /* Étiquette sous la webcam */
-  .cam-tag {
+  /* Deux panneaux entre le gameplay et la webcam */
+  .panels {
     position: absolute;
-    left: var(--slot-cam-x);
-    top: calc(var(--slot-cam-y) + var(--slot-cam-h) + 18px);
-    padding: 10px 22px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    font-size: 26px; font-weight: 800; letter-spacing: 0.1em;
-    text-transform: uppercase;
+    left: 40px; top: 908px;
+    width: 820px;
+    flex-direction: row; gap: 20px;
   }
+  .panels .panel { flex: 1; height: 88px; padding: 0 20px; gap: 14px; }
+  .panels .panel .val { font-size: 30px; }
 
-  /* Bandeau titre entre le gameplay et la webcam */
-  .strip {
+  /* Étiquette de jeu, collée sous la webcam à droite */
+  .now {
     position: absolute;
-    left: 40px; top: 900px;
-    width: var(--safe-right);
-    padding: 26px 34px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--line);
-    backdrop-filter: blur(10px);
+    left: 776px; top: 1020px;
+    width: 84px; height: 394px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, var(--red-500), var(--red-700));
+    --cut: 16px;
+    clip-path: polygon(
+      var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+    );
   }
-  .strip .label {
-    font-size: 22px; font-weight: 800; letter-spacing: 0.3em;
-    text-transform: uppercase; color: var(--accent-2);
-    margin-bottom: 10px;
-  }
-  .strip .value {
-    font-size: 40px; font-weight: 800; letter-spacing: -0.02em;
-  }
-
-  /* Liseré d'accent vertical, côté gauche — repère visuel discret */
-  .rail {
-    position: absolute;
-    left: 0; top: var(--game-y); bottom: 500px;
-    width: 6px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent-2), transparent);
-    opacity: 0.7;
+  .now span {
+    font-family: var(--display);
+    font-size: 44px; text-transform: uppercase; letter-spacing: .1em;
+    writing-mode: vertical-rl;
+    text-shadow: 0 3px 14px rgba(0, 0, 0, .5);
   }
 </style>
 </head>
 <body>
-  <div class="backdrop"></div>
-  <div class="aura"></div>
-  <div class="grid"></div>
-  <div class="rail"></div>
+  <!-- Cadre du gameplay -->
+  <div class="notch game-frame"><div class="inner"></div></div>
 
-  <div class="header">
-    <div class="pseudo" id="pseudo">itsgoktv</div>
-    <div class="badge"><span class="dot"></span>LIVE</div>
+  <!-- Panneaux d'activité -->
+  <div class="panels">
+    <div class="panel">
+      <span class="ico" data-icon="heart"></span>
+      <span class="lbl"><b>Dernier</b><strong>Follower</strong></span>
+      <span class="val" data-p="follower">—</span>
+    </div>
+    <div class="panel">
+      <span class="ico" data-icon="star"></span>
+      <span class="lbl"><b>Dernier</b><strong>Abonné</strong></span>
+      <span class="val" data-p="abonne">—</span>
+    </div>
   </div>
 
-  <div class="slot slot-game"></div>
+  <!-- Webcam -->
+  <div class="notch cam-frame"><div class="inner"></div></div>
+  <div class="claw tl"><i></i><i></i><i></i></div>
+  <div class="claw br"><i></i><i></i><i></i></div>
 
-  <div class="strip">
-    <div class="label">En direct</div>
-    <div class="value" id="titre">FiveM · RP</div>
-  </div>
+  <!-- Bandeau vertical : le jeu en cours -->
+  <div class="now"><span data-p="jeu">FiveM</span></div>
 
-  <div class="slot slot-cam"></div>
-  <div class="cam-tag" id="camtag">itsgoktv</div>
-
-  <div class="ui-fade"></div>
-
-<script>
-  // Personnalisation par l'URL, sans toucher au fichier :
-  // v-jeu.html?name=itsgoktv&titre=FiveM%20%C2%B7%20RP
-  const q = new URLSearchParams(location.search);
-  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
-  set('pseudo', 'name');
-  set('camtag', 'name');
-  set('titre',  'titre');
-  const accent = q.get('accent');
-  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
-</script>
+<script src="common.js"></script>
 </body>
 </html>

@@ -2,65 +2,59 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>V-Pause — écran de pause</title>
+<title>V-Pause — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  .center { top: 660px; }
-  /* Barre de respiration : signale que le live est toujours actif */
-  .breath {
-    position: absolute;
-    left: 240px; top: 1160px;
-    width: 600px; height: 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
+  .center.titles { top: 640px; }
+  .display { font-size: 132px; }
+  .kicker  { margin-bottom: 26px; }
+  .sub     { margin-top: 34px; }
+
+  .bar {
+    position: absolute; left: 240px; top: 1040px;
+    width: 600px; height: 10px;
+    background: rgba(255, 255, 255, .12);
     overflow: hidden;
   }
-  .breath::after {
-    content: "";
-    position: absolute; inset: 0;
-    width: 40%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    animation: sweep 3.2s ease-in-out infinite;
+  .bar::after {
+    content: ""; position: absolute; inset: 0; width: 34%;
+    background: linear-gradient(90deg, var(--red-500), var(--hot));
+    box-shadow: 0 0 24px rgba(255, 92, 116, .8);
+    animation: sweep 3.4s ease-in-out infinite;
     will-change: transform;
   }
   @keyframes sweep {
-    0%, 100% { transform: translateX(-15%); }
-    50%      { transform: translateX(165%); }
+    0%, 100% { transform: translateX(-12%); }
+    50%      { transform: translateX(206%); }
   }
+
+  .block { position: absolute; left: 0; right: 0; top: 1130px; }
+  @media (prefers-reduced-motion: reduce) { .bar::after { animation: none; } }
 </style>
 </head>
 <body>
-  <div class="backdrop"></div>
-  <div class="aura"></div>
-  <div class="grid"></div>
-
-  <div class="header">
-    <div class="pseudo" id="pseudo">itsgoktv</div>
-    <div class="badge"><span class="dot"></span>LIVE</div>
+  <div class="topbar">
+    <div class="handle" data-p="name">ItsGokTV</div>
+    <div class="live"><span class="pip"></span>LIVE</div>
   </div>
 
-  <div class="center">
-    <div class="kicker">Petite coupure</div>
-    <div class="title">PAUSE</div>
-    <div class="subtitle" id="sous">Je reviens dans deux minutes — reste dans le coin</div>
+  <div class="center titles">
+    <div class="kicker">Je reviens</div>
+    <div class="display">Tout de suite</div>
+    <div class="sub" data-p="sous">Reste dans le coin, ça reprend dans deux minutes</div>
   </div>
 
-  <div class="breath"></div>
+  <div class="bar"></div>
 
-  <div class="socials">
-    <div class="social"><span class="tag">Twitch</span><span id="tw">itsgoktv</span></div>
-    <div class="social"><span class="tag">TikTok</span><span id="tk">@itsgoktv</span></div>
+  <div class="block">
+    <div class="socials-title">Restez connectés</div>
+    <div class="socials">
+      <div class="chip"><span class="badge" data-icon="twitch"></span><span class="name" data-p="twitch">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="instagram"></span><span class="name" data-p="instagram">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="youtube"></span><span class="name" data-p="youtube">ItsGokTV</span></div>
+    </div>
   </div>
 
-  <div class="ui-fade"></div>
-
-<script>
-  const q = new URLSearchParams(location.search);
-  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
-  set('pseudo', 'name'); set('tw', 'twitch'); set('tk', 'tiktok'); set('sous', 'sous');
-  const accent = q.get('accent');
-  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
-</script>
+<script src="common.js"></script>
 </body>
 </html>

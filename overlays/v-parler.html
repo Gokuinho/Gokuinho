@@ -2,73 +2,81 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>V-Parler — overlay vertical</title>
+<title>V-Parler — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Webcam plein cadre, centrée haut — le visage domine.
-     C'est le format qui retient le mieux sur TikTok. */
-  :root {
-    --slot-cam-x: 0px;    --slot-cam-y: 400px;
-    --slot-cam-w: 1080px; --slot-cam-h: 608px;
+  /* Webcam plein cadre — le visage porte la scène. */
+  :root { --cam-x: 40px; --cam-y: 420px; --cam-w: 840px; --cam-h: 472px; }
+
+  .cam-frame {
+    left: calc(var(--cam-x) - 5px); top: calc(var(--cam-y) - 5px);
+    width: calc(var(--cam-w) + 10px); height: calc(var(--cam-h) + 10px);
   }
-  .slot-cam {
-    left: var(--slot-cam-x); top: var(--slot-cam-y);
-    width: var(--slot-cam-w); height: var(--slot-cam-h);
-    border-radius: 0; border-left: 0; border-right: 0;
+  .cam-frame > .inner { background: transparent; }
+
+  .claw.tl { left: calc(var(--cam-x) - 24px); top: calc(var(--cam-y) - 26px); }
+  .claw.br {
+    left: calc(var(--cam-x) + var(--cam-w) - 66px);
+    top:  calc(var(--cam-y) + var(--cam-h) - 44px);
+    transform: rotate(180deg);
   }
-  .slot-cam::after { border-radius: 0; }
 
   .topic {
     position: absolute;
-    left: 40px; top: 1060px;
-    width: var(--safe-right);
-    padding: 34px 40px;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--line);
-    backdrop-filter: blur(10px);
+    left: 40px; top: 940px; width: 840px;
+    padding: 30px 34px;
+    background: linear-gradient(105deg, var(--red-600) 0%, var(--red-700) 55%, var(--red-900) 100%);
+    overflow: hidden;
+    --cut: 20px;
+    clip-path: polygon(
+      var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+    );
   }
-  .topic .label {
-    font-size: 24px; font-weight: 800; letter-spacing: 0.3em;
-    text-transform: uppercase; color: var(--accent-2);
-    margin-bottom: 14px;
+  .topic::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-24deg,
+      transparent 0 26px, rgba(255,255,255,.07) 26px 34px, transparent 34px 70px);
   }
-  .topic .value {
-    font-size: 52px; font-weight: 900;
-    line-height: 1.1; letter-spacing: -0.03em;
+  .topic b {
+    position: relative; display: block;
+    font-size: 24px; font-weight: 600; letter-spacing: .32em;
+    text-transform: uppercase; opacity: .85; margin-bottom: 8px;
   }
+  .topic strong {
+    position: relative; display: block;
+    font-family: var(--display);
+    font-size: 58px; text-transform: uppercase; letter-spacing: .02em;
+  }
+
+  .block { position: absolute; left: 0; right: 0; top: 1140px; }
+  .block .socials { align-items: flex-start; padding-left: 40px; }
+  .block .socials-title { text-align: left; padding-left: 40px; }
 </style>
 </head>
 <body>
-  <div class="backdrop"></div>
-  <div class="aura"></div>
-  <div class="grid"></div>
-
-  <div class="header">
-    <div class="pseudo" id="pseudo">itsgoktv</div>
-    <div class="badge"><span class="dot"></span>LIVE</div>
+  <div class="topbar">
+    <div class="handle" data-p="name">ItsGokTV</div>
+    <div class="live"><span class="pip"></span>LIVE</div>
   </div>
 
-  <div class="slot slot-cam"></div>
+  <div class="notch cam-frame"><div class="inner"></div></div>
+  <div class="claw tl"><i></i><i></i><i></i></div>
+  <div class="claw br"><i></i><i></i><i></i></div>
 
   <div class="topic">
-    <div class="label">On parle de</div>
-    <div class="value" id="sujet">Vos questions</div>
+    <b>On parle de</b>
+    <strong data-p="sujet">Vos questions</strong>
   </div>
 
-  <div class="socials">
-    <div class="social"><span class="tag">Twitch</span><span id="tw">itsgoktv</span></div>
-    <div class="social"><span class="tag">TikTok</span><span id="tk">@itsgoktv</span></div>
+  <div class="block">
+    <div class="socials-title">Restez connectés</div>
+    <div class="socials">
+      <div class="chip"><span class="badge" data-icon="twitch"></span><span class="name" data-p="twitch">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="instagram"></span><span class="name" data-p="instagram">ItsGokTV</span></div>
+    </div>
   </div>
 
-  <div class="ui-fade"></div>
-
-<script>
-  const q = new URLSearchParams(location.search);
-  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
-  set('pseudo', 'name'); set('tw', 'twitch'); set('tk', 'tiktok'); set('sujet', 'sujet');
-  const accent = q.get('accent');
-  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
-</script>
+<script src="common.js"></script>
 </body>
 </html>

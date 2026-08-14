@@ -2,64 +2,62 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>V-Fin — écran de fin</title>
+<title>V-Fin — ItsGokTV</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  .center { top: 640px; }
-  .cta {
-    position: absolute;
-    left: 40px; top: 1140px;
-    width: var(--safe-right);
-    padding: 34px 40px;
-    border-radius: 24px;
-    background: linear-gradient(135deg,
-      color-mix(in srgb, var(--accent) 30%, transparent),
-      color-mix(in srgb, var(--accent-2) 18%, transparent));
-    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-    text-align: center;
+  .center.titles { top: 620px; }
+  .display { font-size: 150px; }
+  .kicker  { margin-bottom: 26px; }
+  .sub     { margin-top: 34px; }
+
+  .block { position: absolute; left: 0; right: 0; top: 1120px; }
+
+  /* Flèche vers le bouton « s'abonner » de TikTok, en haut à droite */
+  .follow {
+    position: absolute; right: 210px; top: 300px;
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 26px;
+    background: linear-gradient(120deg, var(--red-500), var(--red-700));
+    font-family: var(--display);
+    font-size: 34px; text-transform: uppercase; letter-spacing: .04em;
+    --cut: 14px;
+    clip-path: polygon(
+      var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+    );
+    animation: nudge 2.6s ease-in-out infinite;
+    will-change: transform;
   }
-  .cta .big {
-    font-size: 46px; font-weight: 900; letter-spacing: -0.02em;
+  .follow span { font-size: 44px; line-height: 1; }
+  @keyframes nudge {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
   }
-  .cta .small {
-    margin-top: 10px;
-    font-size: 28px; color: var(--text-dim);
-  }
+  @media (prefers-reduced-motion: reduce) { .follow { animation: none; } }
 </style>
 </head>
 <body>
-  <div class="backdrop"></div>
-  <div class="aura"></div>
-  <div class="grid"></div>
-
-  <div class="header">
-    <div class="pseudo" id="pseudo">itsgoktv</div>
+  <div class="topbar">
+    <div class="handle" data-p="name">ItsGokTV</div>
   </div>
 
-  <div class="center">
-    <div class="kicker">C'est terminé</div>
-    <div class="title">MERCI<br>D'AVOIR<br>SUIVI</div>
-    <div class="subtitle" id="sous">On se retrouve très vite pour le prochain live</div>
+  <div class="follow">Abonne-toi <span>↑</span></div>
+
+  <div class="center titles">
+    <div class="kicker">Le stream</div>
+    <div class="display">Se termine</div>
+    <div class="sub" data-p="sous">Merci d'avoir suivi — on remet ça très vite</div>
   </div>
 
-  <div class="cta">
-    <div class="big">Abonne-toi ↑</div>
-    <div class="small">pour être prévenu du prochain direct</div>
+  <div class="block">
+    <div class="socials-title">Restez connectés</div>
+    <div class="socials">
+      <div class="chip"><span class="badge" data-icon="twitch"></span><span class="name" data-p="twitch">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="instagram"></span><span class="name" data-p="instagram">ItsGokTV</span></div>
+      <div class="chip"><span class="badge" data-icon="youtube"></span><span class="name" data-p="youtube">ItsGokTV</span></div>
+    </div>
   </div>
 
-  <div class="socials" style="top: 1330px;">
-    <div class="social"><span class="tag">Twitch</span><span id="tw">itsgoktv</span></div>
-    <div class="social"><span class="tag">TikTok</span><span id="tk">@itsgoktv</span></div>
-  </div>
-
-  <div class="ui-fade"></div>
-
-<script>
-  const q = new URLSearchParams(location.search);
-  const set = (id, key) => { const v = q.get(key); if (v) document.getElementById(id).textContent = v; };
-  set('pseudo', 'name'); set('tw', 'twitch'); set('tk', 'tiktok'); set('sous', 'sous');
-  const accent = q.get('accent');
-  if (accent) document.documentElement.style.setProperty('--accent', '#' + accent.replace('#', ''));
-</script>
+<script src="common.js"></script>
 </body>
 </html>
