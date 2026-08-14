@@ -1,0 +1,223 @@
+/* =========================================================================
+   ITSGOK — Couche d'animation (motion layer)
+   S'ajoute par-dessus l'animatic existant. Ne remplace rien :
+   le moteur de lecture, les voix, les SFX et l'art restent inchangés.
+   ========================================================================= */
+
+:root{
+  /* Multiplicateur de vitesse, synchronisé avec le sélecteur 1x / 2x / 4x */
+  --mo-speed: 1;
+  /* Durée de base d'un fondu entre scènes */
+  --mo-cut: .34s;
+}
+
+/* Le fondu d'origine (.75s) est trop mou dès qu'il y a du mouvement :
+   on raccourcit, c'est la caméra qui porte la transition maintenant. */
+.mo-on .scene{
+  transition: opacity calc(var(--mo-cut) / var(--mo-speed)) linear !important;
+}
+
+/* -------------------------------------------------------------------------
+   Rig caméra : .scene > .mo-cam > [ .mo-plate (décor) , .mo-rig (sujets) ]
+   .mo-cam  = mouvement d'entrée (le "montage")
+   .mo-rig  = mouvement continu (le "cadreur")
+   .mo-plate= même mouvement, amplitude réduite -> parallaxe
+   ------------------------------------------------------------------------- */
+.mo-cam, .mo-rig, .mo-plate{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.mo-cam{
+  transform-origin:50% 50%;
+  backface-visibility:hidden;
+  will-change:transform, filter, clip-path;
+}
+.mo-rig{ transform-origin:50% 58%; will-change:transform; }
+.mo-plate{ transform-origin:50% 50%; will-change:transform; z-index:0; }
+.mo-rig{ z-index:1; }
+
+/* =========================================================================
+   1. TRANSITIONS D'ENTRÉE  (classe posée sur .mo-cam, retirée à la fin)
+   ========================================================================= */
+.mo-in{ animation-fill-mode:both; animation-timing-function:cubic-bezier(.2,.75,.2,1); }
+
+.mo-in-fade   { animation-name:moInFade;    animation-duration:calc(1.4s / var(--mo-speed)); }
+.mo-in-cut    { animation-name:moInCut;     animation-duration:calc(.22s / var(--mo-speed)); animation-timing-function:steps(2,end); }
+.mo-in-snap   { animation-name:moInSnap;    animation-duration:calc(.42s / var(--mo-speed)); animation-timing-function:cubic-bezier(.16,1.3,.3,1); }
+.mo-in-pushL  { animation-name:moInPushL;   animation-duration:calc(.95s / var(--mo-speed)); }
+.mo-in-pushR  { animation-name:moInPushR;   animation-duration:calc(.95s / var(--mo-speed)); }
+.mo-in-dollyIn{ animation-name:moInDollyIn; animation-duration:calc(1.6s / var(--mo-speed)); }
+.mo-in-tiltUp { animation-name:moInTiltUp;  animation-duration:calc(1.1s / var(--mo-speed)); }
+.mo-in-whip   { animation-name:moInWhip;    animation-duration:calc(.52s / var(--mo-speed)); animation-timing-function:cubic-bezier(.1,.9,.2,1); }
+.mo-in-iris   { animation-name:moInIris;    animation-duration:calc(1.05s / var(--mo-speed)); }
+
+@keyframes moInFade   { from{ transform:scale(1.07) } to{ transform:scale(1) } }
+@keyframes moInCut    { from{ transform:scale(1.03) } to{ transform:scale(1) } }
+@keyframes moInSnap   { 0%{ transform:scale(1.18) rotate(.9deg) } 100%{ transform:scale(1) rotate(0) } }
+@keyframes moInPushL  { from{ transform:translateX(9%)  scale(1.05) } to{ transform:none } }
+@keyframes moInPushR  { from{ transform:translateX(-9%) scale(1.05) } to{ transform:none } }
+@keyframes moInDollyIn{ from{ transform:scale(1.22) } to{ transform:scale(1) } }
+@keyframes moInTiltUp { from{ transform:translateY(11%) scale(1.1) } to{ transform:none } }
+@keyframes moInWhip{
+  0%  { transform:translateX(34%) skewX(-7deg); filter:blur(16px) }
+  60% { filter:blur(3px) }
+  100%{ transform:none; filter:blur(0) }
+}
+@keyframes moInIris{
+  from{ clip-path:circle(6% at 50% 50%); transform:scale(1.14) }
+  to  { clip-path:circle(85% at 50% 50%); transform:scale(1) }
+}
+
+/* =========================================================================
+   2. MOUVEMENT CONTINU  (classe posée sur .mo-rig et .mo-plate)
+   Le décor (.mo-plate) reçoit une amplitude moindre -> profondeur.
+   ========================================================================= */
+.mo-amb{ animation-iteration-count:infinite; animation-fill-mode:both; }
+
+.mo-amb-driftIn { animation-name:moAmbDriftIn;  animation-duration:calc(26s / var(--mo-speed)); animation-timing-function:linear; }
+.mo-amb-driftOut{ animation-name:moAmbDriftOut; animation-duration:calc(26s / var(--mo-speed)); animation-timing-function:linear; }
+.mo-amb-panL    { animation-name:moAmbPanL;     animation-duration:calc(22s / var(--mo-speed)); animation-timing-function:linear; }
+.mo-amb-panR    { animation-name:moAmbPanR;     animation-duration:calc(22s / var(--mo-speed)); animation-timing-function:linear; }
+.mo-amb-float   { animation-name:moAmbFloat;    animation-duration:calc(7s  / var(--mo-speed)); animation-direction:alternate; animation-timing-function:ease-in-out; }
+.mo-amb-handheld{ animation-name:moAmbHandheld; animation-duration:calc(6.5s/ var(--mo-speed)); animation-timing-function:ease-in-out; }
+.mo-amb-shake   { animation-name:moAmbShake;    animation-duration:calc(2.4s/ var(--mo-speed)); animation-timing-function:linear; }
+
+@keyframes moAmbDriftIn { from{ transform:scale(1) }     to{ transform:scale(1.11) } }
+@keyframes moAmbDriftOut{ from{ transform:scale(1.11) }  to{ transform:scale(1) } }
+@keyframes moAmbPanL    { from{ transform:scale(1.09) translateX(3%) }  to{ transform:scale(1.09) translateX(-3%) } }
+@keyframes moAmbPanR    { from{ transform:scale(1.09) translateX(-3%) } to{ transform:scale(1.09) translateX(3%) } }
+@keyframes moAmbFloat   { from{ transform:translateY(1%) scale(1.02) }  to{ transform:translateY(-1.6%) scale(1.04) } }
+@keyframes moAmbHandheld{
+  0%  { transform:translate(0,0) rotate(0) scale(1.05) }
+  18% { transform:translate(.5%,-.4%) rotate(.22deg) scale(1.055) }
+  37% { transform:translate(-.4%,.5%) rotate(-.18deg) scale(1.05) }
+  58% { transform:translate(.3%,.35%) rotate(.14deg) scale(1.06) }
+  79% { transform:translate(-.5%,-.3%) rotate(-.24deg) scale(1.05) }
+  100%{ transform:translate(0,0) rotate(0) scale(1.05) }
+}
+@keyframes moAmbShake{
+  0%,100%{ transform:translate(0,0) scale(1.06) }
+  6%  { transform:translate(-1.1%,.7%)  rotate(-.5deg) scale(1.07) }
+  12% { transform:translate(1.2%,-.6%)  rotate(.55deg) scale(1.06) }
+  18% { transform:translate(-.8%,-.9%)  rotate(-.35deg) scale(1.07) }
+  24% { transform:translate(.7%,.8%)    rotate(.3deg)  scale(1.06) }
+  30% { transform:translate(0,0) scale(1.06) }
+  70% { transform:translate(0,0) scale(1.06) }
+  76% { transform:translate(1%,-.5%) rotate(.4deg) scale(1.07) }
+  82% { transform:translate(-.9%,.6%) rotate(-.45deg) scale(1.06) }
+}
+
+/* Le décor bouge moins que les sujets : c'est ça, la parallaxe. */
+.mo-plate.mo-amb{ animation-duration:calc(34s / var(--mo-speed)); }
+.mo-plate.mo-amb-handheld,
+.mo-plate.mo-amb-shake{ animation-duration:calc(9s / var(--mo-speed)); }
+.mo-plate{ transform:scale(1.04); }
+
+/* =========================================================================
+   3. MISE EN SCÈNE DES SUJETS (cartes perso, props, textes)
+   ========================================================================= */
+.mo-el{
+  animation:moPop calc(.8s / var(--mo-speed)) cubic-bezier(.18,1.15,.3,1) both;
+}
+@keyframes moPop{
+  0%  { opacity:0; transform:translateY(26px) scale(.9) rotate(-1.5deg) }
+  60% { opacity:1 }
+  100%{ opacity:1; transform:none }
+}
+
+/* Respiration permanente : rien n'est jamais parfaitement immobile. */
+.mo-breathe{
+  animation:moBreathe calc(4.6s / var(--mo-speed)) ease-in-out infinite alternate;
+}
+@keyframes moBreathe{
+  from{ transform:translateY(0) rotate(-.25deg) }
+  to  { transform:translateY(-8px) rotate(.25deg) }
+}
+/* .mo-el et .mo-breathe se relaient : pop d'abord, respiration ensuite. */
+.mo-el.mo-breathe{ animation:
+  moPop calc(.8s / var(--mo-speed)) cubic-bezier(.18,1.15,.3,1) both,
+  moBreathe calc(4.6s / var(--mo-speed)) ease-in-out calc(.8s / var(--mo-speed)) infinite alternate; }
+
+/* Personnage en train de parler : léger rebond + accent lumineux. */
+.mo-talk{
+  animation:moTalk calc(.34s / var(--mo-speed)) ease-in-out infinite alternate !important;
+  filter:brightness(1.12) drop-shadow(0 0 26px rgba(255,176,0,.35));
+  z-index:3;
+}
+@keyframes moTalk{
+  from{ transform:translateY(0)    scale(1)     rotate(-.4deg) }
+  to  { transform:translateY(-10px) scale(1.035) rotate(.4deg) }
+}
+/* Celui qui écoute recule légèrement : la hiérarchie du plan se lit.
+   On coupe la respiration, sinon son animation écraserait ce transform. */
+.mo-listen{
+  animation:none !important;
+  transition:transform .4s ease, filter .4s ease, opacity .4s ease;
+  transform:scale(.965) translateY(4px);
+  filter:brightness(.82) saturate(.9);
+}
+
+/* =========================================================================
+   4. OVERLAYS DE MONTAGE (voile, flash, grain, cache scope)
+   ========================================================================= */
+.mo-veil, .mo-flash, .mo-grain, .mo-bars{
+  position:absolute; inset:0; pointer-events:none;
+}
+.mo-veil{ z-index:60; background:#000; opacity:0; }
+.mo-veil.mo-dip{ animation:moDip calc(.55s / var(--mo-speed)) ease-in-out both; }
+@keyframes moDip{ 0%{opacity:0} 35%{opacity:1} 100%{opacity:0} }
+
+.mo-flash{
+  z-index:61; opacity:0;
+  background:radial-gradient(ellipse at 50% 50%, #fff 0%, rgba(255,224,170,.55) 45%, transparent 72%);
+  mix-blend-mode:screen;
+}
+.mo-flash.mo-fire{ animation:moFlash calc(.5s / var(--mo-speed)) ease-out both; }
+@keyframes moFlash{ 0%{opacity:0} 12%{opacity:.95} 100%{opacity:0} }
+
+/* Grain + scintillement : donne l'impression d'un rendu filmé, pas d'un diaporama. */
+.mo-grain{
+  z-index:58; opacity:.06; mix-blend-mode:overlay;
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(255,255,255,.9) 0 1px, transparent 1px 2px),
+    repeating-linear-gradient(90deg,  rgba(0,0,0,.9)       0 1px, transparent 1px 3px);
+  animation:moGrain .5s steps(3,end) infinite;
+}
+@keyframes moGrain{
+  0%  { transform:translate3d(0,0,0) }
+  33% { transform:translate3d(-1px,1px,0) }
+  66% { transform:translate3d(1px,-1px,0) }
+  100%{ transform:translate3d(0,0,0) }
+}
+
+/* Cache scope : se ferme sur les plans "héroïques", s'ouvre sur le reste. */
+.mo-bars{ z-index:59; }
+.mo-bars::before, .mo-bars::after{
+  content:''; position:absolute; left:0; right:0; height:0; background:#05060a;
+  transition:height .8s cubic-bezier(.2,.8,.2,1);
+}
+.mo-bars::before{ top:0 } .mo-bars::after{ bottom:0 }
+.mo-bars.mo-wide::before, .mo-bars.mo-wide::after{ height:7.5%; }
+
+/* =========================================================================
+   5. AMBIANCES (teinte + contraste par humeur de scène)
+   ========================================================================= */
+.mo-mood{ transition:filter 1.2s ease; }
+.mo-mood-calm  { filter:saturate(1.02) }
+.mo-mood-warm  { filter:saturate(1.18) sepia(.12) contrast(1.03) }
+.mo-mood-tense { filter:saturate(.88)  contrast(1.14) brightness(.94) }
+.mo-mood-panic { filter:saturate(1.25) contrast(1.2)  brightness(.9)  hue-rotate(-6deg) }
+.mo-mood-comic { filter:saturate(1.3)  contrast(1.06) brightness(1.06) }
+.mo-mood-run   { filter:saturate(1.1)  contrast(1.1) }
+.mo-mood-hero  { filter:saturate(1.22) contrast(1.12) brightness(1.05) }
+.mo-mood-cool  { filter:saturate(1.05) contrast(1.08) hue-rotate(6deg) brightness(.98) }
+
+/* =========================================================================
+   6. ACCESSIBILITÉ
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .mo-cam, .mo-rig, .mo-plate, .mo-el, .mo-breathe, .mo-talk, .mo-grain{
+    animation:none !important; transform:none !important;
+  }
+  .mo-listen{ transform:none !important; filter:none !important; }
+}
