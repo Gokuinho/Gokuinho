@@ -1,0 +1,19 @@
+{
+  "name": "gta-rp-tiktok-live",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kit pour streamer du GTA RP en live TikTok tout en jouant : overlay vertical pour TikTok LIVE Studio, télécommande sur téléphone, chat TikTok lu à voix haute, raccourcis clavier en jeu.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "screenshots": "node scripts/screenshots.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "tiktok-live-connector": "^2.5.0"
+  },
+  "license": "MIT"
+}
