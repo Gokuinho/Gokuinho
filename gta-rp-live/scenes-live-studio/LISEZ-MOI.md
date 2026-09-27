@@ -1,4 +1,6 @@
-# Scènes TikTok LIVE Studio · GTA RP
+# Scènes TikTok LIVE Studio · New Los Santos RP
+
+Style repris du fond NLS (noir, jaune néon, logo NLS). `apercu-*.jpg` montre le rendu final avec jeu et webcam.
 
 Toutes les images font 1080 × 1920 (format vertical TikTok). Les « cadres » sont transparents : le jeu et la webcam se voient à travers.
 
