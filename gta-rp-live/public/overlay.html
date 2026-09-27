@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Overlay live GTA RP</title>
+  <meta name="viewport" content="width=1080" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/overlay.css" />
+</head>
+<body>
+  <!-- Toile 1080×1920, mise à l'échelle automatiquement dans la source « Lien » de TikTok LIVE Studio. -->
+  <div id="stage" class="mode-live layout-classic">
+    <!-- Aperçu dans un navigateur (?preview=1) : faux jeu, fausse webcam, interface TikTok -->
+    <div id="preview" hidden>
+      <div class="pv-game" data-zone="game"><span>CAPTURE DU JEU</span></div>
+      <div class="pv-cam" data-zone="webcam"><span>WEBCAM</span></div>
+      <div class="pv-tiktok pv-top" data-ui="top"></div>
+      <div class="pv-tiktok pv-bottom" data-ui="bottom"><span>Zone des commentaires TikTok</span></div>
+    </div>
+
+    <!-- HUD pendant le jeu -->
+    <section id="hud">
+      <div id="game-frame" data-zone="game">
+        <div class="live-badge"><i></i>LIVE RP <b id="hud-server"></b></div>
+        <div class="objective" id="hud-objective-wrap"><small>OBJECTIF</small><span id="hud-objective"></span></div>
+      </div>
+      <div id="cam-frame" data-zone="webcam"></div>
+      <article id="card" data-zone="card">
+        <header>
+          <div class="card-kicker">PERSONNAGE</div>
+          <h1 id="c-name"></h1>
+          <div class="card-meta"><span id="c-age"></span><span id="c-job"></span></div>
+        </header>
+        <ul class="traits" id="c-traits"></ul>
+        <div class="goal" id="goal">
+          <div class="goal-top"><span id="goal-label"></span><b id="goal-value"></b></div>
+          <div class="goal-bar"><div id="goal-fill"></div></div>
+        </div>
+      </article>
+      <div id="ticker" data-zone="ticker"><span id="ticker-text"></span></div>
+      <div id="pinned" data-zone="ticker" hidden>
+        <div class="pinned-user"><span>💬</span><b id="pinned-user"></b></div>
+        <p id="pinned-text"></p>
+      </div>
+    </section>
+
+    <!-- Présentation du perso (sur le jeu assombri) -->
+    <section id="intro" class="screen">
+      <div class="id-card">
+        <div class="id-head">
+          <span>LOS SANTOS · FICHE D’IDENTITÉ</span>
+          <b id="i-server"></b>
+        </div>
+        <h1 id="i-name"></h1>
+        <dl class="id-grid">
+          <div><dt>Âge</dt><dd id="i-age"></dd></div>
+          <div><dt>Métier</dt><dd id="i-job"></dd></div>
+          <div><dt>Faction</dt><dd id="i-faction"></dd></div>
+          <div><dt>Origine</dt><dd id="i-origin"></dd></div>
+        </dl>
+        <p class="id-bio" id="i-bio"></p>
+        <ul class="traits big" id="i-traits"></ul>
+        <blockquote id="i-quote"></blockquote>
+        <div class="id-foot">
+          <span>OBJECTIF DU LIVE</span>
+          <b id="i-objective"></b>
+        </div>
+      </div>
+    </section>
+
+    <!-- Écrans pleins (cachent totalement le jeu) -->
+    <section id="starting" class="screen solid">
+      <div class="big-kicker" id="s-server"></div>
+      <h1 class="big-title">LE LIVE<br />COMMENCE</h1>
+      <div class="countdown" id="s-countdown">--:--</div>
+      <p class="big-sub">Présentation de <b id="s-name"></b></p>
+      <p class="big-hint">Tape <b>👋</b> dans le chat pour dire bonjour</p>
+    </section>
+
+    <section id="pause" class="screen solid">
+      <div class="big-kicker">PAUSE</div>
+      <h1 class="big-title">JE REVIENS</h1>
+      <p class="big-sub" id="p-message"></p>
+      <div class="countdown small" id="p-timer">00:00</div>
+    </section>
+
+    <section id="ending" class="screen solid">
+      <div class="big-kicker" id="e-server"></div>
+      <h1 class="big-title">MERCI<br />À VOUS</h1>
+      <p class="big-sub" id="e-message"></p>
+      <div class="end-stats">
+        <div><b id="e-followers">0</b><span>nouveaux abonnés</span></div>
+        <div><b id="e-likes">0</b><span>likes</span></div>
+        <div><b id="e-gifts">0</b><span>cadeaux</span></div>
+      </div>
+    </section>
+
+    <!-- Mode calage (activé depuis la télécommande) -->
+    <div id="guides">
+      <div class="guide game" data-zone="game">🎮 CAPTURE DU JEU ICI<small id="g-game"></small></div>
+      <div class="guide cam" data-zone="webcam">📷 WEBCAM ICI<small id="g-cam"></small></div>
+      <div class="guides-banner">MODE CALAGE — pense à le désactiver dans la télécommande avant de passer en live</div>
+    </div>
+
+    <!-- Alertes (abonnés, cadeaux, partages) -->
+    <div id="alerts" data-zone="alert"></div>
+
+    <div id="offline" hidden>Kit déconnecté — lance « Lancer-Live »</div>
+  </div>
+
+  <script src="/layout.js"></script>
+  <script src="/common.js"></script>
+  <script src="/overlay.js"></script>
+</body>
+</html>

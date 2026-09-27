@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b12" />
+  <title>Télécommande live RP</title>
+  <link rel="stylesheet" href="/control.css" />
+</head>
+<body>
+  <div class="sticky">
+  <header class="topbar">
+    <div class="brand">🎮 <b>Live RP</b></div>
+    <div class="chips">
+      <span class="chip" id="conn">…</span>
+      <span class="chip" id="tt-chip" title="Chat TikTok">TikTok</span>
+      <span class="chip stat" title="Spectateurs">👀 <b id="st-viewers">0</b></span>
+      <span class="chip stat" title="Likes">❤️ <b id="st-likes">0</b></span>
+    </div>
+  </header>
+
+  <nav class="modes" id="modes" aria-label="Mode de l'overlay">
+    <button data-mode="starting"><span>⏳</span>Début<kbd>1</kbd></button>
+    <button data-mode="intro"><span>🪪</span>Perso<kbd>2</kbd></button>
+    <button data-mode="live"><span>🎮</span>En jeu<kbd>3</kbd></button>
+    <button data-mode="pause"><span>⏸️</span>Pause<kbd>4</kbd></button>
+    <button data-mode="ending"><span>👋</span>Fin<kbd>5</kbd></button>
+  </nav>
+  </div>
+
+  <main>
+    <section class="card" id="pin-box" hidden>
+      <h2>🔒 Code PIN</h2>
+      <p class="hint">Le kit est protégé par un code (variable LIVE_PIN).</p>
+      <div class="row"><input id="pin-input" type="password" inputmode="numeric" placeholder="Code" /><button id="pin-save">OK</button></div>
+    </section>
+
+    <section class="card">
+      <h2>⚡ Actions rapides</h2>
+      <div class="grid-buttons">
+        <button data-countdown="5">⏳ Compte à rebours 5 min</button>
+        <button data-countdown="10">⏳ 10 min</button>
+        <button data-countdown="0">⏹️ Stop rebours</button>
+        <button id="unpin" class="warn">📌 Retirer la question</button>
+        <button data-alert="follow">Tester alerte abonné</button>
+        <button data-alert="gift">Tester alerte cadeau</button>
+      </div>
+      <div class="row">
+        <input id="shout" maxlength="80" placeholder="Message perso à afficher en alerte…" />
+        <button id="shout-send">📣</button>
+      </div>
+      <div class="row">
+        <input id="pin-text" maxlength="280" placeholder="Afficher une question / une annonce à l'écran…" />
+        <button id="pin-send">📌</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🪪 Personnage</h2>
+      <label>Nom RP <input data-path="character.name" maxlength="40" /></label>
+      <div class="two">
+        <label>Âge <input data-path="character.age" maxlength="40" /></label>
+        <label>Faction / groupe <input data-path="character.faction" maxlength="40" /></label>
+      </div>
+      <label>Métier <input data-path="character.job" maxlength="40" /></label>
+      <label>Origine <input data-path="character.origin" maxlength="40" /></label>
+      <label>Histoire (2-3 phrases) <textarea data-path="character.bio" maxlength="280" rows="3"></textarea></label>
+      <label>Traits (un par ligne, 4 max) <textarea data-path="character.traits" data-list rows="3"></textarea></label>
+      <label>Citation <input data-path="character.quote" maxlength="80" /></label>
+    </section>
+
+    <section class="card">
+      <h2>🏙️ Live & serveur</h2>
+      <label>Objectif du live <input data-path="objective" maxlength="80" /></label>
+      <div class="two">
+        <label>Nom du serveur <input data-path="server.name" maxlength="40" /></label>
+        <label>Discord / info <input data-path="server.discord" maxlength="40" /></label>
+      </div>
+      <label>Sous-titre du serveur <input data-path="server.tagline" maxlength="80" /></label>
+      <label>Bandeau défilant (un message par ligne) <textarea data-path="ticker" data-list rows="4"></textarea></label>
+      <label>Message de pause <input data-path="pauseMessage" maxlength="80" /></label>
+      <label>Message de fin <input data-path="endingMessage" maxlength="80" /></label>
+    </section>
+
+    <section class="card">
+      <h2>🎯 Objectif à l'écran</h2>
+      <div class="two">
+        <label>Titre <input data-path="goal.label" maxlength="40" /></label>
+        <label>Cible <input data-path="goal.target" type="number" min="1" inputmode="numeric" /></label>
+      </div>
+      <div class="two">
+        <label>Compté automatiquement
+          <select data-path="goal.source">
+            <option value="likes">Likes TikTok</option>
+            <option value="followers">Nouveaux abonnés</option>
+            <option value="manual">À la main</option>
+          </select>
+        </label>
+        <label>Valeur actuelle <input data-path="goal.current" type="number" min="0" inputmode="numeric" /></label>
+      </div>
+      <button id="stats-reset" class="ghost">Remettre les compteurs à zéro</button>
+    </section>
+
+    <section class="card">
+      <h2>🖼️ Mise en page</h2>
+      <div class="segmented" id="layout">
+        <button data-layout="classic">Classique<small>jeu 16:9 + cam dessous</small></button>
+        <button data-layout="full">Plein écran<small>jeu recadré</small></button>
+      </div>
+      <label class="switch"><input type="checkbox" data-path="guides" /> 📐 Mode calage (montre où placer le jeu et la webcam dans LIVE Studio)</label>
+      <div class="two">
+        <label class="switch"><input type="checkbox" data-path="webcam" /> Cadre webcam</label>
+        <label>Couleur <input type="color" data-path="accent" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>💬 Chat TikTok</h2>
+      <p class="hint" id="tt-status">…</p>
+      <div class="row">
+        <input id="tt-handle" placeholder="@ton_pseudo_tiktok" autocapitalize="off" autocorrect="off" spellcheck="false" />
+        <button id="tt-connect">Connecter</button>
+      </div>
+      <button id="tt-disconnect" class="ghost">Déconnecter</button>
+    </section>
+
+    <section class="card">
+      <h2>🔗 Liens</h2>
+      <ul class="links" id="links"></ul>
+      <p class="hint">Raccourcis sur PC (page active) : <kbd>1</kbd>…<kbd>5</kbd> pour changer de mode. En jeu, utilise le script AutoHotkey fourni (dossier <code>tools</code>) (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>1</kbd>…<kbd>5</kbd>).</p>
+    </section>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/common.js"></script>
+  <script src="/control.js"></script>
+</body>
+</html>

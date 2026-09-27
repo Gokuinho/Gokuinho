@@ -1,0 +1,3 @@
+*.bat text eol=crlf
+*.ahk text eol=crlf
+*.sh text eol=lf
