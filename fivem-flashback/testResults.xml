@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="45" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-09-29" time="23:09:21">
+  <environment nunit-version="2.5.8.0" cwd="/home/user/Gokuinho/fivem-flashback" machine-name="vm" os-version="6.18.44-fc-v37" user="root" user-domain="" clr-version="8.0.10" platform="Linux" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="1.8259" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/user/Gokuinho/fivem-flashback/tests/Optimiser-FiveM.Tests.ps1" executed="True" result="Success" success="True" time="1.8259" asserts="0" description="/home/user/Gokuinho/fivem-flashback/tests/Optimiser-FiveM.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Fichiers livrés" executed="True" result="Success" success="True" time="0.2611" asserts="0" description="Fichiers livrés">
+            <results>
+              <test-case description="le script PowerShell se parse sans erreur" name="Fichiers livrés.le script PowerShell se parse sans erreur" time="0.1536" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="le .ps1 a un BOM UTF-8 (sinon les accents cassent sous Windows PowerShell 5.1)" name="Fichiers livrés.le .ps1 a un BOM UTF-8 (sinon les accents cassent sous Windows PowerShell 5.1)" time="0.0189" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="le .bat est en fins de ligne Windows (CRLF) et en ASCII" name="Fichiers livrés.le .bat est en fins de ligne Windows (CRLF) et en ASCII" time="0.0402" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Get-FiveMPaths" executed="True" result="Success" success="True" time="0.3064" asserts="0" description="Get-FiveMPaths">
+            <results>
+              <test-case description="construit les bons chemins" name="Get-FiveMPaths.construit les bons chemins" time="0.0157" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="ne classe jamais game-storage comme nettoyable" name="Get-FiveMPaths.ne classe jamais game-storage comme nettoyable" time="0.0244" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Clear-FiveMCache" executed="True" result="Success" success="True" time="0.842" asserts="0" description="Clear-FiveMCache">
+            <results>
+              <test-case description="vide les caches, garde les dossiers, et calcule la place libérée" name="Clear-FiveMCache.vide les caches, garde les dossiers, et calcule la place libérée" time="0.1159" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="ne touche JAMAIS à game-storage, CitizenFX.ini ni plugins" name="Clear-FiveMCache.ne touche JAMAIS à game-storage, CitizenFX.ini ni plugins" time="0.2517" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="en simulation (DryRun) ne supprime rien mais annonce la taille" name="Clear-FiveMCache.en simulation (DryRun) ne supprime rien mais annonce la taille" time="0.0516" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="refuse de nettoyer si FiveM est ouvert" name="Clear-FiveMCache.refuse de nettoyer si FiveM est ouvert" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="signale FiveM non installé" name="Clear-FiveMCache.signale FiveM non installé" time="0.0253" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="fonctionne même si certains dossiers de cache n'existent pas" name="Clear-FiveMCache.fonctionne même si certains dossiers de cache n'existent pas" time="0.0539" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Détection des processus" executed="True" result="Success" success="True" time="0.9111" asserts="0" description="Détection des processus">
+            <results>
+              <test-case description="reconnaît tous les processus FiveM pour bloquer le nettoyage" name="Détection des processus.reconnaît tous les processus FiveM pour bloquer le nettoyage" time="0.0095" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="Détection des processus.reconnaît le processus du jeu &lt;Name&gt;" executed="True" result="Success" success="True" time="0.0271" asserts="0" description="reconnaît le processus du jeu &lt;Name&gt;">
+                <results>
+                  <test-case description="reconnaît le processus du jeu FiveM_GTAProcess" name="Détection des processus.reconnaît le processus du jeu FiveM_GTAProcess" time="0.0168" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="reconnaît le processus du jeu FiveM_b3258_GTAProcess" name="Détection des processus.reconnaît le processus du jeu FiveM_b3258_GTAProcess" time="0.0047" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="reconnaît le processus du jeu FiveM_b2944_GTAProcess.exe" name="Détection des processus.reconnaît le processus du jeu FiveM_b2944_GTAProcess.exe" time="0.0056" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="ParameterizedTest" name="Détection des processus.ignore &lt;Name&gt;" executed="True" result="Success" success="True" time="0.0261" asserts="0" description="ignore &lt;Name&gt;">
+                <results>
+                  <test-case description="ignore FiveM" name="Détection des processus.ignore FiveM" time="0.0124" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="ignore FiveM_ChromeBrowser" name="Détection des processus.ignore FiveM_ChromeBrowser" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="ignore GTA5" name="Détection des processus.ignore GTA5" time="0.0044" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="ignore chrome" name="Détection des processus.ignore chrome" time="0.0049" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Test-IsIntegratedGpu" executed="True" result="Success" success="True" time="0.973" asserts="0" description="Test-IsIntegratedGpu">
+            <results>
+              <test-suite type="ParameterizedTest" name="Test-IsIntegratedGpu.&lt;Name&gt; est intégrée : &lt;Expected&gt;" executed="True" result="Success" success="True" time="0.0563" asserts="0" description="&lt;Name&gt; est intégrée : &lt;Expected&gt;">
+                <results>
+                  <test-case description="Intel(R) UHD Graphics 630 est intégrée : True" name="Test-IsIntegratedGpu.Intel(R) UHD Graphics 630 est intégrée : True" time="0.0176" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Intel(R) Iris(R) Xe Graphics est intégrée : True" name="Test-IsIntegratedGpu.Intel(R) Iris(R) Xe Graphics est intégrée : True" time="0.0053" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="AMD Radeon(TM) Graphics est intégrée : True" name="Test-IsIntegratedGpu.AMD Radeon(TM) Graphics est intégrée : True" time="0.0059" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Microsoft Basic Display Adapter est intégrée : True" name="Test-IsIntegratedGpu.Microsoft Basic Display Adapter est intégrée : True" time="0.0054" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="NVIDIA GeForce RTX 4060 Laptop GPU est intégrée : False" name="Test-IsIntegratedGpu.NVIDIA GeForce RTX 4060 Laptop GPU est intégrée : False" time="0.0047" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="AMD Radeon RX 6700 XT est intégrée : False" name="Test-IsIntegratedGpu.AMD Radeon RX 6700 XT est intégrée : False" time="0.0054" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Intel(R) Arc(TM) A770 Graphics est intégrée : False" name="Test-IsIntegratedGpu.Intel(R) Arc(TM) A770 Graphics est intégrée : False" time="0.0049" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description=" est intégrée : False" name="Test-IsIntegratedGpu. est intégrée : False" time="0.0072" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Get-RecommendedSettings" executed="True" result="Success" success="True" time="1.024" asserts="0" description="Get-RecommendedSettings">
+            <results>
+              <test-case description="PC modeste -&gt; textures Normale" name="Get-RecommendedSettings.PC modeste -&gt; textures Normale" time="0.0182" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="8 Go VRAM / 16 Go RAM -&gt; Moyen" name="Get-RecommendedSettings.8 Go VRAM / 16 Go RAM -&gt; Moyen" time="0.0054" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="gros GPU mais peu de RAM -&gt; reste Faible" name="Get-RecommendedSettings.gros GPU mais peu de RAM -&gt; reste Faible" time="0.0059" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="12 Go VRAM / 32 Go RAM -&gt; Eleve" name="Get-RecommendedSettings.12 Go VRAM / 32 Go RAM -&gt; Eleve" time="0.0053" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="impose toujours DirectX 11" name="Get-RecommendedSettings.impose toujours DirectX 11" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Get-Recommendations" executed="True" result="Success" success="True" time="1.1821" asserts="0" description="Get-Recommendations">
+            <results>
+              <test-case description="PC sain -&gt; aucune alerte critique" name="Get-Recommendations.PC sain -&gt; aucune alerte critique" time="0.0449" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="RAM sous 8 Go -&gt; critique" name="Get-Recommendations.RAM sous 8 Go -&gt; critique" time="0.0155" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="fichier d'échange désactivé -&gt; critique" name="Get-Recommendations.fichier d'échange désactivé -&gt; critique" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="peu de disque -&gt; critique" name="Get-Recommendations.peu de disque -&gt; critique" time="0.0141" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="VRAM sous 4 Go -&gt; texture loss signalée" name="Get-Recommendations.VRAM sous 4 Go -&gt; texture loss signalée" time="0.0144" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="portable ASUS en mode Eco (GPU intégré seul) -&gt; critique" name="Get-Recommendations.portable ASUS en mode Eco (GPU intégré seul) -&gt; critique" time="0.0119" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="GPU dédié présent à côté de l'intégré -&gt; pas d'alerte Eco" name="Get-Recommendations.GPU dédié présent à côté de l'intégré -&gt; pas d'alerte Eco" time="0.007" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="sur batterie -&gt; avertit" name="Get-Recommendations.sur batterie -&gt; avertit" time="0.0076" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="tolère un rapport sans les champs GPU (ancien format)" name="Get-Recommendations.tolère un rapport sans les champs GPU (ancien format)" time="0.0247" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Format-Size" executed="True" result="Success" success="True" time="1.2238" asserts="0" description="Format-Size">
+            <results>
+              <test-suite type="ParameterizedTest" name="Format-Size.formate &lt;Bytes&gt; -&gt; &lt;Expected&gt;" executed="True" result="Success" success="True" time="0.0345" asserts="0" description="formate &lt;Bytes&gt; -&gt; &lt;Expected&gt;">
+                <results>
+                  <test-case description="formate 500 -&gt; o$" name="Format-Size.formate 500 -&gt; o$" time="0.015" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="formate 2048 -&gt; Ko$" name="Format-Size.formate 2048 -&gt; Ko$" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="formate 5242880 -&gt; Mo$" name="Format-Size.formate 5242880 -&gt; Mo$" time="0.0042" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="formate 3221225472 -&gt; Go$" name="Format-Size.formate 3221225472 -&gt; Go$" time="0.0101" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
